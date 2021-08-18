@@ -1,0 +1,22 @@
+// Couleurs
+$color-main-text: #333;
+$color-back-background: #eee;
+$color-cards-background: #fff;
+
+$color-primary: #353535;
+$color-primary-light: lighten($color-primary, 45%);
+$color-primary-lighter: lighten($color-primary, 60%);
+
+$color-secondary: rgb(209, 81, 90);
+$color-secondary-light: lighten($color-secondary, 10%);
+$color-secondary-lighter: lighten($color-secondary, 50%);
+
+$color-like-neutral: #353535;
+$color-neutral-lighter: lighten($color-like-neutral, 60%);
+$color-like-like: $color-primary;
+$color-like-dislike: $color-secondary;
+
+$color-ajouter-commentaire: $color-like-neutral;
+
+// Shadow
+$shadow: 0 0 8px $color-like-neutral;
