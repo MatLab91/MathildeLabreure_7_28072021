@@ -1,13 +1,16 @@
 import http from "../http-common";
 
-class TutorialDataService {
+class PosteDataService {
 
   create(data) {
-    return http.post("/tutorials", data);
+    return http.post("/addPoste", data);
+  }
+  getAll() {
+    return http.get("/postes");
   }
 
 }
-
+export default new PosteDataService();
 
 /* class TutorialDataService {
   getAll() {
@@ -39,4 +42,3 @@ class TutorialDataService {
   }
 }  */
 
-export default new PosteDataService();

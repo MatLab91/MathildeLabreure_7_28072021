@@ -1,35 +1,16 @@
-module.exports = app => {
-    const postes = require("../controllers/poste.controller.js");
-  
-    var router = require("express").Router();
-  
-    // Create a new Poste
-    router.post("/addPoste", postes.create);
+const postes = require("../controllers/poste.controller.js");
+const {Router } = require("express")
+
+const router = new Router()
+
+// Créer une publication
+router.post("/api/addPoste", postes.create);
+// Montrer tous les postes des utilisateurs
+router.get("/api/postes", postes.getAll);
+// Modifier une publication
+router.put("/api/postes/:id", postes.update);
+// Supprimer une publication
+router.delete("/api/postes/:id", postes.delete);
 
 
-    
-}
-  
-/*
-    // Retrieve all Tutorials
-    router.get("/", tutorials.findAll);
-  
-    // Retrieve all published Tutorials
-    router.get("/published", tutorials.findAllPublished);
-  
-    // Retrieve a single Tutorial with id
-    router.get("/:id", tutorials.findOne);
-  
-    // Update a Tutorial with id
-    router.put("/:id", tutorials.update);
-  
-    // Delete a Tutorial with id
-    router.delete("/:id", tutorials.delete);
-  
-    // Delete all Tutorials
-    router.delete("/", tutorials.deleteAll);
-  
-    app.use('/api/tutorials', router);
-  };
-
-  */
+module.exports = router

@@ -20,5 +20,8 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.postes = require("./poste.model.js")(sequelize, Sequelize);
+//db.commentaires = require("./commentaire.model.js")(sequelize, Sequelize);
+//db.likes = require("./like.model.js")(sequelize, Sequelize);
+db.utilisateurs = require("./utilisateur.model.js")(sequelize, Sequelize);
 
 module.exports = db;

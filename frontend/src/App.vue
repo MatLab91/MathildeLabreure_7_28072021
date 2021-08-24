@@ -1,15 +1,17 @@
 <template>
+  <div>
   <div class="header main-wrapper header--wrapper">
     <div>
-      <router-link to="/" class="header--lien" aria-label="Retour vers la page d'accueil">
-        <img  class="header--logo" src="assets/icon-left-font-monochrome-white.svg" alt="Logo de Groupomania">
+      <router-link to="/forum" class="header--lien" aria-label="Retour vers la page d'accueil">
+        <img  class="header--logo" src="./assets/icon-left-font-monochrome-white.svg" alt="Logo de Groupomania">
       </router-link>
     </div>
 
     <nav class="header--nav">
-      <router-link to="/" class="header--nav--profile header--lien" title="Retour vers la page d'accueil">
+      <router-link to="/forum" class="header--nav--profile header--lien" title="Retour vers la page d'accueil">
         <i class="fas fa-globe"></i>
       </router-link>
+      
       <!-- <router-link to="/" aria-label="Notifications" title="Mes notifications" class="header--nav--notifs header--lien">
         <i class="fas fa-bell"></i>
       </router-link> -->
@@ -20,20 +22,27 @@
         <i class="fas fa-power-off"></i>
       </router-link>
     </nav>
-    <router-view/>
+    
+  </div>
+  <router-view/>
   </div>
   
 </template>
 
+<script>
+
+</script>
+
+
 <style lang="scss">
 @import "../variables.scss";
 #app {
-  font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  font-weight: 400;
+  font-weight: 300;
   z-index: 2;
   max-width: 2500px;
   margin: 0 auto;
@@ -61,6 +70,7 @@
 
   &--logo {
     width: 300px;
+    margin-left: 5%;
   }
 
   &--nav {

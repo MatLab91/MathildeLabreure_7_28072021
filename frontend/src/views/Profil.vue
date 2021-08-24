@@ -1,49 +1,81 @@
 <template>
+  <div>
   <div class="contact">
-    <img id="logo" alt="Logo Groupomania" src="../assets/icon-left-font-monochrome-black.png">
-    <h1>Mon profil</h1>
-    <div class="profil-container">
-        <img id="photo-profil" alt="photo de profil" src="../assets/photofemme.jpeg">
+    <h1 id="profil-title">Mon profil</h1>
+    <div class="profil-container" v-for="utilisateur in utilisateurs" :key="utilisateur.id">
         <div class="profil-container--enfant">
-          <div class="infos"><span class="categorie">Prénom </span>Amélie</div>
-          <div class="infos"><span class="categorie">Nom </span>Cordier</div>
-          <div class="infos"><span class="categorie">Email </span>amelie.cordier@groupomania.fr</div>
-          <div class="infos"><span class="categorie">Téléphone </span>06 13 78 93 22</div>
-          <div class="infos"><span class="categorie">Citation </span>"Sois le changement que tu veux voir dans le monde" - Gandhi</div>
+          <div class="infos"><span class="categorie">Prénom et Nom </span> {{ utilisateur.name }}</div>
+          <div class="infos"><span class="categorie">Email </span>{{ utilisateur.email }}</div>
           <button class="button">
-            <span><i class="far fa-edit"></i> Modifier</span>
+            <span><i class="fas fa-trash"></i> Supprimer mon compte</span>
           </button>
         </div>
     </div>
-    <Footer/>
+  </div>
+  <Footer/>
   </div>
 </template>
 
-<script>
-  import Footer from '@/components/Footer.vue'
+<script>import Footer from '@/components/Footer.vue'
+import UtilisateurDataService from "../services/UtilisateurDataService";
 
-  export default {
+export default {
   components: {
     Footer
   },
-}
+  name: "display-user",
+  data() {
+    return {
+      utilisateurs: {
+        id: null,
+        email: "",
+        name: "",
+      },
+    };
+  },
+  methods: {
+    displayUsers() {
+      UtilisateurDataService.getAll()
+        .then((response) => {
+          this.utilisateurs = response.data;
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    
+  },
+  beforeMount() {
+      UtilisateurDataService.getAll()
+        .then((response) => {
+          this.utilisateurs = response.data;
+          console.log(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      this.displayUsers();
+    },
+};
 </script>
 
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 @import "../../variables.scss";
-#logo {
-  max-width: 30%;
-  max-height: 20rem;
-}
+
 p {
   font-size: 1rem;
   font-weight: 400;
 }
-img {
-  width: 20rem;
-  max-height: 20rem;
-  border-radius: 50%;
+.contact {
+  background-color: white;
+  min-height: 70vh;
+  font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
+  margin-top: 2rem;
+}
+#profil-title {
+  padding-left: 2rem;
 }
 .profil-container {
   display: flex;
@@ -75,10 +107,6 @@ img {
     margin-right: 25vw;
   }
 }
-#photo-profil {
-    width: 200px;
-    height: 200px; 
-}
 .button {
   background: $color-secondary;
   color:white;
@@ -87,7 +115,7 @@ img {
   font-weight: 800;
   font-size: 15px;
   border: none;
-  width: 30%;
+  width: 100%;
   min-width: 150px;
   padding: 1rem;
   transition: .4s background-color;

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div id="card-container">
+    <!-- <div id="card-container">
       <div class="card">
         <h1 class="card__title" v-if="mode == 'login'">Connexion</h1>
         <h1 class="card__title" v-else>Inscription</h1>
         <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <span class="card__action" @click="switchToCreateAccount()">Créer un compte</span></p>
-        <p class="card__subtitle" v-else>Tu as déjà un compte ? <span class="card__action" @click="switchToLogin()">Se connecter</span></p>      
+        <p class="card__subtitle" v-else>Tu as déjà un compte ? <span class="card__action" @click="switchToLogin()">Se connecter</span></p>
         <div class="form-row">
         <input v-model="email" class="form-row__input" type="text" placeholder="Adresse mail"/>
       </div>
@@ -27,7 +27,34 @@
           <span>Créer mon compte</span>
         </button>
       </div>
-    </div>
+      </div>
+    </div> -->
+
+
+    <div id="card-container">
+      <div class="card">
+        <!-- <h1 class="card__title" v-if="mode == 'login'">Connexion</h1> -->
+        <h1 class="card__title">Inscription</h1>
+        <!-- <p class="card__subtitle" v-if="mode == 'login'">Tu n'as pas encore de compte ? <span class="card__action" @click="switchToCreateAccount()">Créer un compte</span></p>
+        <p class="card__subtitle" v-else>Tu as déjà un compte ? <span class="card__action" @click="switchToLogin()">Se connecter</span></p> -->
+        <div class="form-row">
+        <input v-model="utilisateur.email" class="form-row__input" type="text" placeholder="Adresse mail"/>
+      </div>
+      <div class="form-row">
+          <input v-model="utilisateur.name" class="form-row__input" type="text" placeholder="Prénom et Nom"/>
+      </div>
+      <div class="form-row">
+        <input v-model="utilisateur.password" class="form-row__input" type="password" placeholder="Mot de passe"/>
+      </div>
+      <div class="form-row">
+        <!-- <button class="button" :class= "{'button--disabled' : !validatedFields}" v-if="mode == 'login'">
+          <span>Connexion</span>
+        </button> -->
+        <button  @click='createAccount()' class="button">
+          <span>Créer mon compte</span>
+        </button>
+      </div>
+      </div>
     </div>
     <Footer/>
   </div>
@@ -35,9 +62,10 @@
 
 <script>
   import Footer from '@/components/Footer.vue'
+  import UtilisateurDataService from "../services/UtilisateurDataService";
   /*import axios from 'axios'*/
 
-  export default {
+/*  export default {
   components: {
     Footer
   },
@@ -101,10 +129,43 @@
           err => {
             console.log(err)
           }
-        )*/
+        )
     }
-  }
+  } */
 
+export default {
+  components: {
+    Footer
+  },
+  name: 'save-user',
+  data() {
+    return {
+      utilisateur: {
+        email: '',
+        name: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    createAccount() {
+      var data = {
+        email: this.utilisateur.email,
+        name: this.utilisateur.name,
+        password: this.utilisateur.password
+      };
+
+      UtilisateurDataService.signup(data)
+        .then(response => {
+          this.utilisateur.id = response.data.id;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -113,7 +174,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 80vh;
+  min-height: 70vh;
+  font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
 }
 .form-row {
     display: flex;

@@ -1,12 +1,11 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
-
-const path = __dirname + '/app/views/';
+const PosteRouter = require("./app/routes/poste.routes");
+//const CommentaireRouter = require("./app/routes/commentaire.routes");
+//const LikeRouter = require("./app/routes/like.routes");
+const UtilisateurRouter = require("./app/routes/utilisateur.routes");
 
 const app = express();
-
-app.use(express.static(path));
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -15,10 +14,10 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
-app.use(bodyParser.json());
+app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
 
@@ -28,11 +27,10 @@ db.sequelize.sync();
 //   console.log("Drop and re-sync db.");
 // });
 
-app.get('/', function (req,res) {
-  res.sendFile(path + "index.html");
-});
-
-require("./app/routes/poste.routes")(app);
+app.use(PosteRouter);
+//app.use(CommentaireRouter);
+//app.use(LikeRouter);
+app.use(UtilisateurRouter);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

@@ -20,6 +20,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../variables.scss";
 #footer {
+  font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
   background-color: $color-like-neutral;
   color: white;
   padding-top: 0.8rem;
