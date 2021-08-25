@@ -15,6 +15,7 @@ exports.create = (req, res) => {
   const dataPoste = {
     title: req.body.title,
     content: req.body.content,
+    user_id: req.body.user_id
   };
   // Save Poste in the database
   Poste.create(dataPoste)
@@ -75,7 +76,7 @@ exports.update = (req, res) => {
 };
 
 // Supprimer un poste
-exports.delete = (req, res) => {
+/*exports.delete = (req, res) => {
   const id = req.params.id;
 
   Poste.destroy({
@@ -97,4 +98,4 @@ exports.delete = (req, res) => {
         message: "Impossible de supprimer ce poste."
       });
     });
-};
+};*/

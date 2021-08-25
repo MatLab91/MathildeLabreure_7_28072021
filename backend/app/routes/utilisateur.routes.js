@@ -12,7 +12,7 @@ router.post("/api/login", utilisateurs.login);
 // Supprimer un utilisateur
 // router.delete("/user/:id", utilisateurs.delete);
 // Afficher les utilisateurs
-router.get("/api/users", utilisateurs.getAll)
+// router.get("/api/users", utilisateurs.getAll)
 
 
 module.exports = router

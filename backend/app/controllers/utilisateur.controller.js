@@ -4,6 +4,9 @@ const db = require("../models");
 const Op = db.Sequelize.Op;
 const Utilisateur = db.utilisateurs;
 
+
+
+
 // Chiffre le mot de passe de l'utilisateur, ajoute l'utilisateur à la base de données
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
@@ -69,4 +72,19 @@ exports.getAll = (req, res) => {
         err.message || "Une erreur est apparue pendant l'affichage des utilisateurs."
     });
   });
+}
+
+// L'utilisateur peut supprimer son profil
+exports.delete = (req, res) => {
+  try {
+    const user = Utilisateur(req.params.id);
+    if (user.id === req.body.id) {
+      user.delete({$set:req.body});
+      res.status(200).json("Le compte a été supprimé.")
+    } else {
+      res.status(403).json("Ce compte n'a pas pu être supprimé");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
 }
