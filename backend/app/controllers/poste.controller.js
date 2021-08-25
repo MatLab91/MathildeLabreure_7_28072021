@@ -1,6 +1,16 @@
+const jwt = require('jsonwebtoken');
 const db = require("../models");
 const Poste = db.postes;
 const Op = db.Sequelize.Op;
+const acces = require('../utils/jwt.utils');
+const order = acces.decoderToken;
+const admin = acces.decoderTokenAdmin;
+require('dotenv').config({ path: '../variables.env' });
+const tokenKey = process.env.SECRET_KEY;
+
+
+const regex = /^([A-Za-z0-9\s.])*$/
+
 
 // Créer et sauvegarder un nouveau poste
 exports.create = (req, res) => {
@@ -11,11 +21,18 @@ exports.create = (req, res) => {
     });
     return;
   }
+
+  let token = req.body.token
+
+  const decodedToken = jwt.decode(token, tokenKey);
+  //on decode le token
+  const userId = decodedToken.userId;
+
   // Créer la publication
   const dataPoste = {
     title: req.body.title,
     content: req.body.content,
-    user_id: req.body.user_id
+    user_id: userId
   };
   // Save Poste in the database
   Poste.create(dataPoste)
@@ -32,70 +49,45 @@ exports.create = (req, res) => {
     });
 };
 
-
-
 // Afficher tous les postes
-exports.getAll = (req, res) => {
-  Poste.findAll({
-    attributes: ['title', 'content', 'createdAt']
-  })
-  .then(data => {
-    res.send(data);
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-        err.message || "Une erreur est apparue pendant l'affichage des postes."
-    });
-  });
+exports.getAllPostes = async (req, res) => {
+  let acces = false
+  order(req)
+  admin(req)
+  if (acces = true) {
+  
+  
+    await Poste.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['name'],
+          required: false
+        }
+      ]
+    })
+  
+      .then((Poste) => res.status(200).json(Postes))
+      .catch(error => res.status(404).json({ error }))
+  } else { (console.log('false')), window.location = 'http://localhost:8080/login' }
 }
 
-// Modifier un poste
-exports.update = (req, res) => {
-  const id = req.params.id;
-
-  Poste.update(req.body, {
-    where: { id: id }
-  })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Le poste a été modifié correctement."
-        });
-      } else {
-        res.send({
-          message: `Le poste ${id} n'a pas pu être modifié. Peut-être n'a-t-il pas été trouvé.`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Une erreur est survenue lors de la modification du poste."
-      });
-    });
-};
 
 // Supprimer un poste
-/*exports.delete = (req, res) => {
-  const id = req.params.id;
-
-  Poste.destroy({
-    where: { id: id }
+exports.deletePoste = (req, res) => {
+  Poste.findOne({
+    where: { id: req.params.id },
   })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "Le poste a bien été supprimé"
-        });
-      } else {
-        res.send({
-          message: "Le poste n'a pas pu être supprimé. Il n'a sûrement pas été trouvé."
-        });
+    .then((Poste) => {
+      let acces = false
+      order(req)
+      admin(req)
+      if (acces = true) {
+        Poste.destroy({ id: req.params.id }, { truncate: true })
+          .then(() => res.status(201).json({ message: 'Le poste a bien été supprimé' }))
+          .catch((error) => res.status(400).json({ error }))
       }
     })
-    .catch(err => {
-      res.status(500).send({
-        message: "Impossible de supprimer ce poste."
-      });
-    });
-};*/
+    .catch(() => res.status(500).json({ 'error': 'Publication introuvable' }))
+
+};

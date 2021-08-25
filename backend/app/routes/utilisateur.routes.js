@@ -7,12 +7,10 @@ const router = new Router()
 router.post("/api/signup", utilisateurs.signup);
 // Se connecter
 router.post("/api/login", utilisateurs.login);
-// Modifier le profil d'un utilisateur
-// router.put("/user/:id", utilisateurs.update);
+// Afficher un utilisateur
+router.get("/api/profil/:id", utilisateurs.getOneUtilisateur)
 // Supprimer un utilisateur
-// router.delete("/user/:id", utilisateurs.delete);
-// Afficher les utilisateurs
-// router.get("/api/users", utilisateurs.getAll)
+router.delete("/profil/:id", utilisateurs.delete);
 
 
 module.exports = router
