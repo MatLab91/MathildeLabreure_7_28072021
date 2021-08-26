@@ -5,6 +5,7 @@ import About from '../views/About.vue'
 import Contact from '../views/Contact.vue'
 import Profil from '../views/Profil.vue'
 import Login from '../views/Login.vue'
+import SignUp from '../views/SignUp.vue'
 import Forum from '../views/Forum.vue'
 
 Vue.use(VueRouter)
@@ -37,6 +38,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: SignUp
   },
   {
     path: '/forum',

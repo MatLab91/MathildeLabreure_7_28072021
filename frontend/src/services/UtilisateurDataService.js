@@ -13,8 +13,11 @@ class UtilisateurDataService {
   login() {
     return http.post("/login");
   } 
-  getAll() {
-    return http.get("/users");
+  getOneUtilisateur() {
+    return http.get("/profil/:id");
+  }
+  delete(){
+    return http.delete("profil/:id")
   }
 
 }

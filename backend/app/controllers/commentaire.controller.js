@@ -1,101 +1,96 @@
 const db = require("../models");
+const Poste = db.postes
 const Commentaire = db.commentaires;
+const Utilisateur = db.utilisateurs;
 const Op = db.Sequelize.Op;
+const jwt = require('jsonwebtoken');
+const acces = require('../utils/jwt.utils');
+const order = acces.decoderToken;
+const admin = acces.decoderTokenAdmin;
+require('dotenv').config({ path: '../variables.env' });
+const tokenKey = process.env.SECRET_KEY;
+
 
 // Créer et sauvegarder un nouveau commentaire
-exports.create = (req, res) => {
-  const id = poste.params.id;
-  // Validate request
-  if (!req.body.content) {
-    res.status(400).send({
-      message: "Ce champ ne peut pas être vide"
-    });
-    return;
-  }
+exports.createCommentaire = (req, res, next) => {
+  let token = req.body.token
+  const decodedToken = jwt.decode(token, tokenKey);
+  const userId = decodedToken.userId;
+  let content = req.body.content
+  let id = req.body.posteId
 
-  // Créer un commentaire
-  const commentaire = {
-    content: req.body.content,
-  };
+  Poste.findOne({
+    where: { id: id },
 
-  // Sauvegarder le commentaire dans la base de données
-  Commentaire.create(commentaire)
-    .then(data => {
-      res.send(data);
+  })
+    .then((Poste) => {
+      Commentaire.create({
+        content: content,
+        publicationId: Publication.id,
+        userId: userId
+      })
+        .then((Commentaire) =>
+          res.status(201).json(Commentaire))
+
+        .catch(error => res.status(400).json({ error }))
     })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Une erreur est apparue pendant la création du commentaire."
-      });
-    });
-};
-
-// Afficher les commentaires pour chaque postes
-exports.getAll = (req, res) => {
-    const contennt = req.query.content;
-    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-
-  Commentaire.findAll({ //Tutorial.findAll({ where: condition })
-    attributes: ['title', 'description', 'createdAt'] //
-  })
-  .then(data => {
-    res.send(data);
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-        err.message || "Une erreur est apparue pendant l'affichage des commentaires."
-    });
-  });
+    .catch(() => {
+      res.status(500).json({ 'error': "Le poste n'a pas été trouvé" });
+    })
 }
 
+// Afficher les commentaires pour chaque postes
+exports.getAllCommentaires = (req, res, next) => {
+  Commentaire.findAll({
+    where: { PosteId: req.params.id },
+    include: [
+      {
+        model: Utilisateur,
+        attributes: ['name'],
+        required: false
+      }
+    ]
+  })
+    .then((Commentaire) => res.status(200).json(Commentaire))
+    .catch(error => res.status(404).json({ error }))
+};
+
 //Modifier un commentaire
-exports.update = (req, res) => {
-    const id = req.params.id;
-  
-    Commentaire.update(req.body, {
-      where: { id: id }
+exports.modifyCommentaire = (req, res, next) => {
+  let content = req.body.content;
+  let acces = false
+  order(req)
+
+  if (acces = true) {
+    Commentaire.findOne({
+      attributes: ['id', 'content'],
+      where: { id: req.params.id }
     })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Le commentaire a bien été modifié"
-          });
-        } else {
-          res.send({
-            message: `Le commentaire à modifier n'a pas été trouvé.`
-          });
-        }
+      .then((Commentaire) => {
+        Commentaire.update({
+          content: (content ? content : Commentaire.content)
+        })
+          .then(() => res.status(201).json(Commentaire))
+          .catch((error) => res.status(400).json({ error }))
       })
-      .catch(err => {
-        res.status(500).send({
-          message: "Une erreur est survenue lors de la modification du commentaire id=" + id
-        });
-      });
-  };
+      .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable' }))
+  }
+}
 
   // Supprimer un commentaire
-  exports.delete = (req, res) => {
-    const id = req.params.id;
-  
-    Commentaire.destroy({
-      where: { id: id }
+  exports.deleteCommentaire = (req, res, next) => {
+    Commentaire.findOne({
+      where: { id: req.params.id }
     })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Le commentaire a bien été supprimé"
-          });
-        } else {
-          res.send({
-            message: `Ce commentaire n'a pas pu être supprimé.`
-          });
+      .then((Commentaire) => {
+        let acces = false
+        order(req)
+        admin(req)
+        if (acces = true) {
+          Commentaire.destroy({ id: req.params.id })
+            .then(() => res.status(201).json({ message: 'Le commentaire a bien été supprimé.' }))
+            .catch((error) => res.status(400).json({ error }))
         }
       })
-      .catch(err => {
-        res.status(500).send({
-          message: "Ce commentaire n'a pas pu être supprimé."
-        });
-      });
+      .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable.' }))
   };

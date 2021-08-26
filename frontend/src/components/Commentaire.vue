@@ -1,31 +1,5 @@
 <template>
-    <div>
-     <article v-for="poste in postes" :key="poste.id">
-
-      <header class="header">
-        <div class="header--text">
-          <p class="header--name">
-            NOM PERSONNE AYANT PUBLIÉ
-          </p>
-          <p class="header--date">
-            {{ poste.createdAt }}
-          </p>
-        </div>
-      </header>
-
-      <!-- Main: Titre et contenu de la publication -->
-      <main>
-        <strong>
-            {{ poste.title }}
-        </strong>
-        <div>
-          <p> {{ poste.content }}</p>
-        </div>
-      </main>
-
-      <!-- Footer: Commentaires -->
-      <footer>
-        <div class="commentaires">
+<div class="commentaires">
           <h3>Commentaires</h3>
           <div class="commentaires--unique">
             <div class="commentaires--poste">
@@ -42,95 +16,55 @@
             <label for="ajout-commentaire" class="hidden">Votre commentaire</label>
             <input id="ajout-commentaire" type="text" placeholder="Votre commentaire">
             <input type="hidden" name="postId">
-            <button type="submit" aria-label="Commenter">Commenter</button>
+            <button @click="publierCommentaire()" type="submit" aria-label="Commenter">Commenter</button>
           </form>
         </div>
-      </footer>
-
-    </article>
-</div>
 </template>
 
 <script>
-import PosteDataService from "../services/PosteDataService";
+import CommentaireDataService from "../services/CommentaireDataService";
 
 export default {
-  name: "display-poste",
+  name: "add-commentaire",
   data() {
     return {
-      postes: {
+      commentaire: {
         id: null,
-        title: "",
-        content: "",
+        content: ""
       },
+      submitted: false
     };
   },
   methods: {
-    retrievePostes() {
-      PosteDataService.getAllPostes()
-        .then((response) => {
-          this.postes = response.data;
+    publierCommentaire() {
+      var data = {
+        content: this.poste.content
+      };
+
+      CommentaireDataService.createCommentaire(data)
+        .then(response => {
+          this.commentaire.id = response.data.id;
           console.log(response.data);
+          this.submitted = true;
         })
-        .catch((e) => {
+        .catch(e => {
           console.log(e);
         });
     },
-    
-  },
-  beforeMount() {
-      PosteDataService.getAllPostes()
-        .then((response) => {
-          this.postes = response.data;
-          console.log(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      this.retrievePostes();
-    },
+
+     newCommentaire() {
+      this.submitted = false;
+      this.Commentaire = {};
+    }
+  }
 };
 </script>
+
 
 <style lang="scss" scoped>
 @import "../../variables.scss";
 
-  article {
-    font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
-    overflow: hidden;
-    margin: 2em auto;
-    max-width: 800px;
-    background: $color-cards-background;
-    box-shadow: $shadow;
-    border-radius: 10px;
-  }
-  .header {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $color-neutral-lighter;
-    padding: 0.8rem 1.5rem 0 1.5rem;
-    &--text {
-      flex-grow: 2;
-    }
-    &--name {
-      color: $color-primary;
-      font-weight: bold; 
-    }
-    &--date {
-      font-style: italic;
-      font-weight: 400;
-    }
-  }
-  main {
-    .content {
-      padding: 1em 2em;
-      font-weight: bolder;
-    }
-  }
-
-  .commentaires {
+.commentaires {
     clear: both;
     &--unique {
       border-top: solid 2px $color-primary;
@@ -196,5 +130,4 @@ export default {
   .hidden {
   display: none;
   }
-
 </style>

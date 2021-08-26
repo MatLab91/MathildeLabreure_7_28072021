@@ -4,13 +4,12 @@ const {Router } = require("express")
 const router = new Router()
 
 // Créer un nouveau commentaire sous un poste
-//router.post("/api/postes/:id/addcomment", commentaires.create);
+router.post("/api/poste/commentaire", commentaires.createCommentaire);
 // Montrer tous les commentaires d'un poste
-//router.get("/api/postes/:id/comments", commentaires.getAll);
+router.get("/api/poste/commentaire/:id", commentaires.getAllCommentaires);
 // Modifier un commentaire
-//router.put("/postes/:id/comments/:id", commentaires.update);
+router.put("/postes/commentaire/:id", commentaires.modifyCommentaire);
 // Supprimer un commentaire
-//router.delete("/postes/:id/comments/:id", commentaires.delete);
-
+router.delete("/postes/:id/commentaire/:id", commentaires.deleteCommentaire);
 
 module.exports = router

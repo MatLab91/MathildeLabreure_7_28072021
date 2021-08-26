@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db = require("../models");
 const Poste = db.postes;
+const Utilisateur = db.utilisateurs;
 const Op = db.Sequelize.Op;
 const acces = require('../utils/jwt.utils');
 const order = acces.decoderToken;
@@ -60,7 +61,7 @@ exports.getAllPostes = async (req, res) => {
     await Poste.findAll({
       include: [
         {
-          model: User,
+          model: Utilisateur,
           attributes: ['name'],
           required: false
         }

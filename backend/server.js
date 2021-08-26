@@ -1,8 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const PosteRouter = require("./app/routes/poste.routes");
-//const CommentaireRouter = require("./app/routes/commentaire.routes");
-//const LikeRouter = require("./app/routes/like.routes");
+const CommentaireRouter = require("./app/routes/commentaire.routes");
 const UtilisateurRouter = require("./app/routes/utilisateur.routes");
 
 const app = express();
@@ -28,8 +27,7 @@ db.sequelize.sync();
 // });
 
 app.use(PosteRouter);
-//app.use(CommentaireRouter);
-//app.use(LikeRouter);
+app.use(CommentaireRouter);
 app.use(UtilisateurRouter);
 
 // set port, listen for requests

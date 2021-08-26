@@ -9,8 +9,9 @@ const admin = jwtUtils.decoderTokenAdmin;
 require('dotenv').config({ path: './variables.env' });
 const tokenKey = process.env.SECRET_KEY;
 
-// const models = require('../models');
-// const User = models.user;
+// Expressions régulières pour vérifier email et mot de passe
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 
 // Chiffre le mot de passe de l'utilisateur, ajoute l'utilisateur à la base de données
 exports.signup = (req, res, next) => {
@@ -53,7 +54,7 @@ exports.login = (req, res, next) => {
       return res.status(400).json({ 'error': 'certains champs sont manquants' });
   }
 
-  Utilisateur.findOne({ where: { mail: mail } })
+  Utilisateur.findOne({ where: { email: email } })
   .then(Utilisateur => {
 
     if (Utilisateur) {
@@ -69,13 +70,20 @@ exports.login = (req, res, next) => {
                     });
                 }
             })
-            .catch(error => res.status(500).json({ error }));
+            .catch(error => {
+                console.log(error);
+                res.status(500).send({
+                  message:
+                    error.message || "Une erreur est apparue pendant la création du poste."
+                });
+              });
     } else {
         return res.status(400).json({ alerte: "Cet utilisateur n'existe pas." })
     }
 })
 .catch(error => res.status(500).json({ error }));
 }
+
 
 // Afficher un utilisateur
 
@@ -89,7 +97,10 @@ exports.getOneUtilisateur = (req, res, next) => {
       where: { id: userId }
   })
       .then(Utilisateur => res.status(200).json(Utilisateur))
-      .catch(error => res.status(404).json({ error }))
+      .catch(error => {
+          console.log(error);
+          res.status(404).json({ error })
+      })
 };
 
 // L'utilisateur peut supprimer son profil
