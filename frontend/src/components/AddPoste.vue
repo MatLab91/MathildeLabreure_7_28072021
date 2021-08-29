@@ -57,7 +57,8 @@ export default {
     savePoste() {
       var data = {
         title: this.poste.title,
-        content: this.poste.content
+        content: this.poste.content,
+        token: sessionStorage.getItem("token")
       };
 
       PosteDataService.create(data)

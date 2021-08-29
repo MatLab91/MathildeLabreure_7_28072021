@@ -9,7 +9,7 @@ class CommentaireDataService {
     return http.get("/poste/commentaire/:id");
   }
   modifyCommentaire(){
-    return hhtp.put("/postes/commentaire/:id");
+    return http.put("/postes/commentaire/:id");
   }
   deleteCommentaire() {
     return http.delete("/postes/:id/commentaire/:id");

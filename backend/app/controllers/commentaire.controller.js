@@ -16,8 +16,8 @@ exports.createCommentaire = (req, res, next) => {
   let token = req.body.token
   const decodedToken = jwt.decode(token, tokenKey);
   const userId = decodedToken.userId;
-  let content = req.body.content
-  let id = req.body.posteId
+  let content = req.body.content;
+  let id = req.body.posteId;
 
   Poste.findOne({
     where: { id: id },
@@ -26,7 +26,7 @@ exports.createCommentaire = (req, res, next) => {
     .then((Poste) => {
       Commentaire.create({
         content: content,
-        publicationId: Publication.id,
+        posteId: Poste.id,
         userId: userId
       })
         .then((Commentaire) =>
@@ -40,7 +40,7 @@ exports.createCommentaire = (req, res, next) => {
 }
 
 // Afficher les commentaires pour chaque postes
-exports.getAllCommentaires = (req, res, next) => {
+/* exports.getAllCommentaires = (req, res, next) => {
   Commentaire.findAll({
     where: { PosteId: req.params.id },
     include: [
@@ -53,9 +53,28 @@ exports.getAllCommentaires = (req, res, next) => {
   })
     .then((Commentaire) => res.status(200).json(Commentaire))
     .catch(error => res.status(404).json({ error }))
-};
+}; */
 
-//Modifier un commentaire
+exports.getAllCommentaires = async (req, res) => {
+  let acces = false
+  order(req)
+  admin(req)
+  if (acces = true) {
+    await Commentaire.findAll({
+      include: [
+        {
+          model: Utilisateur,
+          attributes: ['name'],
+          required: false
+        }
+      ]
+    })
+      .then((Commentaires) => res.status(200).json(Commentaires))
+      .catch(error => res.status(404).json({ error }))
+  } else { (console.log('false')), window.location = 'http://localhost:8080/login' }
+}
+
+//Modifier son propre commentaire
 exports.modifyCommentaire = (req, res, next) => {
   let content = req.body.content;
   let acces = false
@@ -77,7 +96,7 @@ exports.modifyCommentaire = (req, res, next) => {
   }
 }
 
-  // Supprimer un commentaire
+  // Supprimer son propre commentaire
   exports.deleteCommentaire = (req, res, next) => {
     Commentaire.findOne({
       where: { id: req.params.id }

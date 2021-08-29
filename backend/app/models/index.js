@@ -23,4 +23,11 @@ db.postes = require("./poste.model.js")(sequelize, Sequelize);
 db.commentaires = require("./commentaire.model.js")(sequelize, Sequelize);
 db.utilisateurs = require("./utilisateur.model.js")(sequelize, Sequelize);
 
+// Permet de gérer les associations entre les tables/models
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
 module.exports = db;

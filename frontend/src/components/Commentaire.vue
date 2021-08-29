@@ -1,6 +1,6 @@
 <template>
 <div class="commentaires">
-          <h3>Commentaires</h3>
+          <!-- <h3>Commentaires</h3>
           <div class="commentaires--unique">
             <div class="commentaires--poste">
               <p class="commentaires--poste--titre">
@@ -10,14 +10,15 @@
                 CONTENU COMMENTAIRE
               </p>
             </div>
-          </div>
+          </div> -->
 
           <form class="commentaires--ajouter">
             <label for="ajout-commentaire" class="hidden">Votre commentaire</label>
-            <input id="ajout-commentaire" type="text" placeholder="Votre commentaire">
+            <input v-model="commentaire.content" id="ajout-commentaire" type="text" placeholder="Votre commentaire">
             <input type="hidden" name="postId">
-            <button @click="publierCommentaire()" type="submit" aria-label="Commenter">Commenter</button>
+            <button @click="publierCommentaire" type="submit" aria-label="Commenter">Commenter</button>
           </form>
+          <!-- enlever la balise form -->
         </div>
 </template>
 
@@ -26,6 +27,7 @@ import CommentaireDataService from "../services/CommentaireDataService";
 
 export default {
   name: "add-commentaire",
+  props: ['posteId'],
   data() {
     return {
       commentaire: {
@@ -38,9 +40,10 @@ export default {
   methods: {
     publierCommentaire() {
       var data = {
-        content: this.poste.content
+        content: this.commentaire.content,
+        posteId: this.posteId,
+        token: sessionStorage.getItem("token"),
       };
-
       CommentaireDataService.createCommentaire(data)
         .then(response => {
           this.commentaire.id = response.data.id;
@@ -51,7 +54,6 @@ export default {
           console.log(e);
         });
     },
-
      newCommentaire() {
       this.submitted = false;
       this.Commentaire = {};

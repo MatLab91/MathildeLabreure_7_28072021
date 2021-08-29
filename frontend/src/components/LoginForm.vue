@@ -65,8 +65,8 @@ export default {
       this.$router.push("/signup");
     },
     connectAccount() {
-      let email = this.email;
-      let password = this.password;
+      let email = this.utilisateur.email;
+      let password = this.utilisateur.password;
       axios
         .post("http://localhost:8080/api/login", {
           email: email,

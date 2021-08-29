@@ -68,10 +68,10 @@ export default {
     },
     async createAccount() {
       await axios
-        .post("http://localhost:3000/api/signup", {
-          email: this.utilisateur.email,
-          name: this.utilisateur.name,
-          password: this.utilisateur.password,
+        .post("http://localhost:8080/api/signup", {
+          email: this.email,
+          name: this.name,
+          password: this.password,
         })
         .then(() => {
           this.$router.push("/login");

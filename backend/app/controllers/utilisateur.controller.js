@@ -103,6 +103,10 @@ exports.getOneUtilisateur = (req, res, next) => {
       })
 };
 
+// L'utilisateur peut modifier son profil
+
+
+
 // L'utilisateur peut supprimer son profil
 exports.delete = (req, res) => {
   Utilisateur.findOne({

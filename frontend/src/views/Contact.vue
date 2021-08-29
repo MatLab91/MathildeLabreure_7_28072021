@@ -21,6 +21,9 @@
 </script>
 
 <style scoped>
+.contact {
+  font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
+}
 p {
   font-size: 1rem;
   font-weight: 400;

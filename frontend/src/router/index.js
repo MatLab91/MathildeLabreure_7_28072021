@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-//import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Contact from '../views/Contact.vue'
 import Profil from '../views/Profil.vue'
@@ -11,11 +10,12 @@ import Forum from '../views/Forum.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  /*{
-    path: '/',
-    name: 'Home',
-    component: Home
-  }, */
+  {
+		path: "/",
+		redirect: {
+			name: "Login"
+		}
+	},
   {
     path: '/about',
     name: 'About',
@@ -32,22 +32,26 @@ const routes = [
   {
     path: '/profil',
     name: 'Profil',
-    component: Profil
+    component: Profil,
+		//meta: { auth: true },
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+		meta: { auth: false }
   },
   {
     path: '/signup',
     name: 'SignUp',
-    component: SignUp
+    component: SignUp,
+		meta: { auth: false }
   },
   {
     path: '/forum',
     name: 'Forum',
-    component: Forum
+    component: Forum,
+		//meta: { auth: true },
   }
 ]
 

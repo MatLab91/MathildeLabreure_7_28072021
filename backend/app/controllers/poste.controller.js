@@ -28,12 +28,14 @@ exports.create = (req, res) => {
   const decodedToken = jwt.decode(token, tokenKey);
   //on decode le token
   const userId = decodedToken.userId;
-
+  console.log(userId)
+  console.log(token)
+  console.log(decodedToken)
   // Créer la publication
   const dataPoste = {
     title: req.body.title,
     content: req.body.content,
-    user_id: userId
+    userId: userId
   };
   // Save Poste in the database
   Poste.create(dataPoste)
@@ -56,8 +58,6 @@ exports.getAllPostes = async (req, res) => {
   order(req)
   admin(req)
   if (acces = true) {
-  
-  
     await Poste.findAll({
       include: [
         {
@@ -67,12 +67,10 @@ exports.getAllPostes = async (req, res) => {
         }
       ]
     })
-  
-      .then((Poste) => res.status(200).json(Postes))
+      .then((Postes) => res.status(200).json(Postes))
       .catch(error => res.status(404).json({ error }))
   } else { (console.log('false')), window.location = 'http://localhost:8080/login' }
 }
-
 
 // Supprimer un poste
 exports.deletePoste = (req, res) => {

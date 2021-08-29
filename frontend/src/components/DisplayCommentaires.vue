@@ -1,56 +1,36 @@
 <template>
-    <div>
-     <article v-for="poste in postes" :key="poste.id">
-      <header class="header">
-        <div class="header--text">
-          <p class="header--name">
-            {{ poste.utilisateur.name }}
-          </p>
-          <p class="header--date">
-            {{ getDate(poste.createdAt) }}
-          </p>
-        </div>
-      </header>
-
-      <!-- Main: Titre et contenu de la publication -->
-      <main>
-        <strong>
-            {{ poste.title }}
-        </strong>
-        <div>
-          <p> {{ poste.content }}</p>
-        </div>
-      </main>
-
-      <footer>
-        <DisplayCommentaires :posteId=poste.id />
-        <Commentaire :posteId=poste.id />
-      </footer>
-    </article>
-</div>
+<div class="commentaires">
+    <h3>Commentaires</h3>
+  <div v-for="commentaire in commentaires" :key="commentaire.id" class="display-commentaires">
+    
+    <div class="commentaires--unique">
+      <div class="commentaires--poste">
+        <p class="commentaires--poste--titre">
+          <span>PERSONNE : {{ commentaire.utilisateur.name }}</span> {{ getDate(commentaire.createdAt) }}
+        </p>
+        <p class="commentaires--poste--texte">CONTENU : {{ commentaire.content }}</p>
+      </div>
+    </div>
+  </div>
+  </div>
 </template>
 
 <script>
-import Commentaire from '@/components/Commentaire.vue';
-import DisplayCommentaires from '@/components/DisplayCommentaires.vue';
-import PosteDataService from "../services/PosteDataService";
+import CommentaireDataService from "../services/CommentaireDataService";
 
 export default {
-  name: "display-poste",
-  components: {
-    Commentaire,
-    DisplayCommentaires
-  },
+  name: "display-commentaire",
+  props: ['posteId'],
   data() {
     return {
-      postes: [],
+      commentaires: [],
     };
   },
   methods: {
-    retrievePostes() {
-      PosteDataService.getAllPostes()
+    retrieveCommentaires() {
+      CommentaireDataService.getAllCommentaires()
         .then((response) => {
-          this.postes = response.data;
+          this.commentaires = response.data;
           console.log(response.data);
         })
         .catch((e) => {
@@ -63,15 +43,15 @@ export default {
     }
   },
   beforeMount() {
-      PosteDataService.getAllPostes()
+      CommentaireDataService.getAllCommentaires()
         .then((response) => {
-          this.postes = response.data;
+          this.commentaires = response.data;
           console.log(response.data);
         })
         .catch((e) => {
           console.log(e);
         });
-      this.retrievePostes();
+      this.retrieveCommentaires();
     },
 };
 </script>
@@ -79,42 +59,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../variables.scss";
 
-  article {
-    font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
-    overflow: hidden;
-    margin: 2em auto;
-    max-width: 800px;
-    background: $color-cards-background;
-    box-shadow: $shadow;
-    border-radius: 10px;
-  }
-  .header {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    background-color: $color-neutral-lighter;
-    padding: 0.8rem 1.5rem 0 1.5rem;
-    &--text {
-      flex-grow: 2;
-    }
-    &--name {
-      color: $color-primary;
-      font-weight: bold; 
-    }
-    &--date {
-      font-style: italic;
-      font-weight: 400;
-    }
-  }
-  main {
-    .content {
-      padding: 1em 2em;
-      font-weight: bolder;
-    }
-  }
-
-  .commentaires {
+.commentaires {
     clear: both;
     &--unique {
       border-top: solid 2px $color-primary;
@@ -180,5 +125,4 @@ export default {
   .hidden {
   display: none;
   }
-
 </style>
