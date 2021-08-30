@@ -26,16 +26,12 @@ export default {
   name: "display-user",
   data() {
     return {
-      utilisateurs: {
-        id: null,
-        email: "",
-        name: "",
-      },
+      utilisateurs: []
     };
   },
   methods: {
     displayUsers() {
-      UtilisateurDataService.getAll()
+      UtilisateurDataService.getOneUtilisateur()
         .then((response) => {
           this.utilisateurs = response.data;
           console.log(response.data);
@@ -47,7 +43,7 @@ export default {
     
   },
   beforeMount() {
-      UtilisateurDataService.getAll()
+      UtilisateurDataService.getOneUtilisateur()
         .then((response) => {
           this.utilisateurs = response.data;
           console.log(response.data);

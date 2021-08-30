@@ -1,9 +1,9 @@
 # OpenClassrooms P7 - Réseau social d'entreprise
-7ème projet de la formation de [développeur web de OpenClassrooms](https://openclassrooms.com/fr/paths/185-developpeur-web)
+7ème projet de la formation de [développeur web de OpenClassrooms]
 
 ## Scénario
 Développement (Frontend et Backend) d'un réseau social d'entreprise pour une société fictive Groupomania.  
-Une grande liberté est donnée pour développer ce projet: il faut simplement respecter la charte graphique fournie.
+Les contraintes pour ce projet sont le respect de la charte graphique et l'utilisation d'un framework frontend et d'une base de données SQL. 
 
 ## Fonctionnalités implémentées
 - Création d'utilisateurs (CRUD)
@@ -22,7 +22,7 @@ Une grande liberté est donnée pour développer ce projet: il faut simplement r
   - Donner/enlever les droits d'admin à un autre utilisateur
 - Autres
   - Session persistante au rechargement de la page
-  - Chargement des posts au fur et à mesure du scroll (= infinite scroll)
+  - possibilité de se déconnecter
 
 
 ## Technologies utilisées

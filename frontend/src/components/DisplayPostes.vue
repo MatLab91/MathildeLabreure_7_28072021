@@ -1,6 +1,6 @@
 <template>
-    <div>
-     <article v-for="poste in postes" :key="poste.id">
+  <div>
+    <article v-for="poste in postes" :key="poste.id">
       <header class="header">
         <div class="header--text">
           <p class="header--name">
@@ -10,36 +10,42 @@
             {{ getDate(poste.createdAt) }}
           </p>
         </div>
+        <!-- <form class="header--supprimer--post">
+          <button @click="deletePoste" aria-label="Supprimer la publication">
+            <i class="fas fa-trash"></i>
+          </button>
+        </form> -->
       </header>
 
       <!-- Main: Titre et contenu de la publication -->
       <main>
         <strong>
-            {{ poste.title }}
+          {{ poste.title }}
         </strong>
         <div>
-          <p> {{ poste.content }}</p>
+          <p>{{ poste.content }}</p>
         </div>
       </main>
 
       <footer>
-        <DisplayCommentaires :posteId=poste.id />
-        <Commentaire :posteId=poste.id />
+        <DisplayCommentaires :posteId="poste.id" />
+        <Commentaire :posteId="poste.id" />
       </footer>
     </article>
-</div>
+  </div>
 </template>
 
 <script>
-import Commentaire from '@/components/Commentaire.vue';
-import DisplayCommentaires from '@/components/DisplayCommentaires.vue';
+import Commentaire from "@/components/Commentaire.vue";
+import DisplayCommentaires from "@/components/DisplayCommentaires.vue";
 import PosteDataService from "../services/PosteDataService";
+// import axios from "axios";
 
 export default {
   name: "display-poste",
   components: {
     Commentaire,
-    DisplayCommentaires
+    DisplayCommentaires,
   },
   data() {
     return {
@@ -58,127 +64,143 @@ export default {
         });
     },
     getDate(datetime) {
-        let date = new Date(datetime).toJSON().slice(0,10).replace(/-/g,'/')
-        return date
+      let date = new Date(datetime).toJSON().slice(0, 10).replace(/-/g, "/");
+      return date;
     }
   },
   beforeMount() {
-      PosteDataService.getAllPostes()
-        .then((response) => {
-          this.postes = response.data;
-          console.log(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      this.retrievePostes();
-    },
+    PosteDataService.getAllPostes()
+      .then((response) => {
+        this.postes = response.data;
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    this.retrievePostes();
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../variables.scss";
 
-  article {
-    font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
-    overflow: hidden;
-    margin: 2em auto;
-    max-width: 800px;
-    background: $color-cards-background;
-    box-shadow: $shadow;
-    border-radius: 10px;
+article {
+  font-family: "Poppins", sans-serif, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  margin: 2em auto;
+  max-width: 800px;
+  background: $color-cards-background;
+  box-shadow: $shadow;
+  border-radius: 10px;
+}
+.header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-neutral-lighter;
+  padding: 0.8rem 1.5rem 0 1.5rem;
+  &--text {
+    flex-grow: 2;
   }
-  .header {
+  &--name {
+    color: $color-primary;
+    font-weight: bold;
+  }
+  &--date {
+    font-style: italic;
+    font-weight: 400;
+  }
+  &--supprimer--post {
+    button {
+      background: $color-secondary-lighter;
+      margin: 1rem 3rem 1rem 1rem;
+      padding: 9% 11%;
+      border: 1px solid $color-secondary;
+      border-radius: 10px;
+      cursor: pointer;
+      &:hover {
+        background: $color-secondary-light;
+      }
+    }
+    .fas {
+      color: $color-secondary;
+      font-size: 1.2rem;
+    }
+  }
+}
+main {
+  .content {
+    padding: 1em 2em;
+    font-weight: bolder;
+  }
+}
+
+.commentaires {
+  clear: both;
+  &--unique {
+    border-top: solid 2px $color-primary;
+    border-bottom: solid 2px $color-primary;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 2;
+  }
+}
+.commentaires {
+  &--poste {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    &--titre {
+      font-style: italic;
+      margin: 0;
+      span {
+        color: $color-secondary;
+      }
+    }
+    &--texte {
+      margin: 0;
+    }
+  }
+}
+.commentaires {
+  &--ajouter {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
-    background-color: $color-neutral-lighter;
-    padding: 0.8rem 1.5rem 0 1.5rem;
-    &--text {
+    input {
       flex-grow: 2;
+      min-width: 0;
+      padding: 0 1em;
+      border: 1px solid $color-primary;
+      height: 3rem;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
     }
-    &--name {
-      color: $color-primary;
-      font-weight: bold; 
-    }
-    &--date {
-      font-style: italic;
-      font-weight: 400;
-    }
-  }
-  main {
-    .content {
-      padding: 1em 2em;
-      font-weight: bolder;
-    }
-  }
-
-  .commentaires {
-    clear: both;
-    &--unique {
-      border-top: solid 2px $color-primary;
-      border-bottom: solid 2px $color-primary;
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-around;
-      align-items: center;
-      flex-grow: 2;
-    }
-  }
-  .commentaires {
-    &--poste {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin-top: 1em;
-      margin-bottom: 1em;
-      &--titre {
-        font-style: italic;
-        margin: 0;
-        span {
-          color: $color-secondary;
-        }
-      }
-      &--texte {
-        margin: 0;
+    button {
+      background: $color-primary-lighter;
+      border: 1px solid $color-primary;
+      border-left: none;
+      height: 3.13rem;
+      font-size: 1em;
+      color: $color-ajouter-commentaire;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      cursor: pointer;
+      margin-right: 0.5rem;
+      &:hover {
+        background: $color-primary-light;
       }
     }
   }
-  .commentaires {
-    &--ajouter {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-      align-items: center;
-      input {
-        flex-grow: 2;
-        min-width: 0;
-        padding: 0 1em;
-        border: 1px solid $color-primary;
-        height: 3rem;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-      }
-      button {
-        background: $color-primary-lighter;
-        border: 1px solid $color-primary;
-        border-left: none;
-        height: 3.13rem;
-        font-size: 1em;
-        color: $color-ajouter-commentaire;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
-        cursor: pointer;
-        margin-right: 0.5rem;
-        &:hover {
-          background: $color-primary-light;
-        }
-      }
-    }
-  }
-  .hidden {
+}
+.hidden {
   display: none;
-  }
-
+}
 </style>

@@ -39,22 +39,6 @@ exports.createCommentaire = (req, res, next) => {
     })
 }
 
-// Afficher les commentaires pour chaque postes
-/* exports.getAllCommentaires = (req, res, next) => {
-  Commentaire.findAll({
-    where: { PosteId: req.params.id },
-    include: [
-      {
-        model: Utilisateur,
-        attributes: ['name'],
-        required: false
-      }
-    ]
-  })
-    .then((Commentaire) => res.status(200).json(Commentaire))
-    .catch(error => res.status(404).json({ error }))
-}; */
-
 exports.getAllCommentaires = async (req, res) => {
   let acces = false
   order(req)

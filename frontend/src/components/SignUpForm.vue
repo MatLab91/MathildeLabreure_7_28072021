@@ -27,7 +27,7 @@
           v-model="password"
           class="form-row__input"
           type="password"
-          placeholder="Mot de passe"
+          placeholder="Mot de passe (entre 4 et 8 caractères et 2 chiffres)"
         />
       </div>
       <div class="form-row">
@@ -80,6 +80,9 @@ export default {
           this.$router.push("/signup");
         });
     },
+    deletePoste() {
+
+    }
   },
 };
 </script>

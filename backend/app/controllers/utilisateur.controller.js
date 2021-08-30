@@ -4,10 +4,11 @@ const jwt = require('jsonwebtoken');
 const Op = db.Sequelize.Op;
 const Utilisateur = db.utilisateurs;
 const jwtUtils = require('../utils/jwt.utils');
+const tokenKey = process.env.SECRET_KEY;
 const order = jwtUtils.decoderToken;
 const admin = jwtUtils.decoderTokenAdmin;
 require('dotenv').config({ path: './variables.env' });
-const tokenKey = process.env.SECRET_KEY;
+
 
 // Expressions régulières pour vérifier email et mot de passe
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -87,24 +88,40 @@ exports.login = (req, res, next) => {
 
 // Afficher un utilisateur
 
-exports.getOneUtilisateur = (req, res, next) => {
+/*exports.getOneUtilisateur = (req, res, next) => {
   let token = req.params.id
-
+  console.log(token)
   const decodedToken = jwt.verify(token, tokenKey);
+  console.log(decodedToken)
   const userId = decodedToken.userId;
-
+  console.log(userId)
+    
   Utilisateur.findOne({
-      where: { id: userId }
+      where: { id : userId }
   })
       .then(Utilisateur => res.status(200).json(Utilisateur))
       .catch(error => {
           console.log(error);
           res.status(404).json({ error })
       })
-};
+}; */
 
-// L'utilisateur peut modifier son profil
-
+exports.getOneUtilisateur = (req, res) => {
+    Utilisateur.findOne({
+      where: { id: req.params.id }
+    })
+      .then((Utilisateur) => {
+          let acces = false
+          order(req)
+          admin(req)
+          if (acces = true) {
+            Utilisateur.findOne({where: { id: req.params.id }})
+                  .then((Utilisateur) => res.status(201).json({ Utilisateur }))
+                  .catch((error) => res.status(400).json({ error }))
+          }
+      })
+      .catch(() => res.status(500).json({ 'error': 'Utilisateur introuvable' }))
+  };
 
 
 // L'utilisateur peut supprimer son profil
