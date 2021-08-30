@@ -66,6 +66,7 @@ export default {
           this.poste.id = response.data.id;
           console.log(response.data);
           this.submitted = true;
+          this.$emit('refresh')
         })
         .catch(e => {
           console.log(e);
@@ -75,6 +76,7 @@ export default {
      newPoste() {
       this.submitted = false;
       this.Poste = {};
+      this.$forceUpdate();
     }
   }
 };

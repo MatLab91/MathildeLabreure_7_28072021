@@ -8,8 +8,8 @@ class PosteDataService {
   getAllPostes() {
     return http.get("/postes");
   }
-  deletePoste() {
-    return http.delete("/postes/:id");
+  deletePoste(id) {
+    return http.delete("/postes/"+ id);
   }
 
 }

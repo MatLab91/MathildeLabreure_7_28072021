@@ -10,11 +10,11 @@
             {{ getDate(poste.createdAt) }}
           </p>
         </div>
-        <!-- <form class="header--supprimer--post">
-          <button @click="deletePoste" aria-label="Supprimer la publication">
+        <form class="header--supprimer--post">
+          <button @click="deletePoste(poste.id)" aria-label="Supprimer la publication">
             <i class="fas fa-trash"></i>
           </button>
-        </form> -->
+        </form>
       </header>
 
       <!-- Main: Titre et contenu de la publication -->
@@ -66,6 +66,36 @@ export default {
     getDate(datetime) {
       let date = new Date(datetime).toJSON().slice(0, 10).replace(/-/g, "/");
       return date;
+    },
+    /*deletePoste() {
+      let id = this.poste.id
+      console.log(id)
+      // let id = sessionStorage.getItem("id");
+      let token = sessionStorage.getItem("token");
+      axios.delete("http://localhost:8080/api/poste/" + id, {
+        headers: { authorization: token },
+      });
+      // sessionStorage.removeItem("id");
+      // this.$router.push("/accueil");
+    },*/
+    /*deletePoste() {
+      PosteDataService.deletePoste(this.postes.id)
+        .then(response => {
+          console.log(response.data);
+          this.$router.push({ name: "postes" });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }*/
+    deletePoste(id) {
+      PosteDataService
+        .deletePoste(`${id}`)
+        .then((response) => {
+          console.log(response.data);
+          alert('Le commentaire a correctement été supprimé')
+          this.$emit('refresh')
+      })
     }
   },
   beforeMount() {

@@ -88,13 +88,10 @@ exports.login = (req, res, next) => {
 
 // Afficher un utilisateur
 
-/*exports.getOneUtilisateur = (req, res, next) => {
+exports.getOneUtilisateur = (req, res, next) => {
   let token = req.params.id
-  console.log(token)
   const decodedToken = jwt.verify(token, tokenKey);
-  console.log(decodedToken)
   const userId = decodedToken.userId;
-  console.log(userId)
     
   Utilisateur.findOne({
       where: { id : userId }
@@ -104,25 +101,7 @@ exports.login = (req, res, next) => {
           console.log(error);
           res.status(404).json({ error })
       })
-}; */
-
-exports.getOneUtilisateur = (req, res) => {
-    Utilisateur.findOne({
-      where: { id: req.params.id }
-    })
-      .then((Utilisateur) => {
-          let acces = false
-          order(req)
-          admin(req)
-          if (acces = true) {
-            Utilisateur.findOne({where: { id: req.params.id }})
-                  .then((Utilisateur) => res.status(201).json({ Utilisateur }))
-                  .catch((error) => res.status(400).json({ error }))
-          }
-      })
-      .catch(() => res.status(500).json({ 'error': 'Utilisateur introuvable' }))
-  };
-
+};
 
 // L'utilisateur peut supprimer son profil
 exports.delete = (req, res) => {

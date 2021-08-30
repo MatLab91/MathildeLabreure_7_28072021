@@ -11,6 +11,7 @@ la présentation des fonctionnalités doit être simple ;
 
 
 Critères d’évaluation
+
 🎯 Créer une application
 
 La compétence est validée si :

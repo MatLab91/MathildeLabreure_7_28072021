@@ -36,7 +36,7 @@
           class="button"
           :class="{ 'button--disabled': !validatedFields }"
         >
-          <span>Connexion</span>
+          <span>Inscription</span>
         </button>
       </div>
     </div>

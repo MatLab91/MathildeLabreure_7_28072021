@@ -2,11 +2,11 @@
   <div>
   <div class="contact">
     <h1 id="profil-title">Mon profil</h1>
-    <div class="profil-container" v-for="utilisateur in utilisateurs" :key="utilisateur.id">
+    <div class="profil-container">
         <div class="profil-container--enfant">
           <div class="infos"><span class="categorie">Prénom et Nom </span> {{ utilisateur.name }}</div>
           <div class="infos"><span class="categorie">Email </span>{{ utilisateur.email }}</div>
-          <button class="button">
+          <button @click="deleteUser(utilisateur.id)" class="button">
             <span><i class="fas fa-trash"></i> Supprimer mon compte</span>
           </button>
         </div>
@@ -16,7 +16,8 @@
   </div>
 </template>
 
-<script>import Footer from '@/components/Footer.vue'
+<script>
+import Footer from '@/components/Footer.vue'
 import UtilisateurDataService from "../services/UtilisateurDataService";
 
 export default {
@@ -26,26 +27,40 @@ export default {
   name: "display-user",
   data() {
     return {
-      utilisateurs: []
+      utilisateur: {
+        id: null,
+        email: "",
+        name: "",
+      },
     };
   },
   methods: {
-    displayUsers() {
-      UtilisateurDataService.getOneUtilisateur()
+    deleteUser(id) {
+      UtilisateurDataService.delete(`${id}`)
         .then((response) => {
-          this.utilisateurs = response.data;
+          this.utilisateur = response.data;
+          console.log(response.data);
+          this.$router.push("/login");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    displayUsers() {
+      UtilisateurDataService.getOneUtilisateur(sessionStorage.getItem("token"))
+        .then((response) => {
+          this.utilisateur = response.data;
           console.log(response.data);
         })
         .catch((e) => {
           console.log(e);
         });
     },
-    
   },
   beforeMount() {
-      UtilisateurDataService.getOneUtilisateur()
+    UtilisateurDataService.getOneUtilisateur(sessionStorage.getItem("token"))
         .then((response) => {
-          this.utilisateurs = response.data;
+          this.utilisateur = response.data;
           console.log(response.data);
         })
         .catch((e) => {
