@@ -93,7 +93,7 @@ export default {
         .deletePoste(`${id}`)
         .then((response) => {
           console.log(response.data);
-          alert('Le commentaire a correctement été supprimé')
+          alert('Le poste a correctement été supprimé')
           this.$emit('refresh')
       })
     }

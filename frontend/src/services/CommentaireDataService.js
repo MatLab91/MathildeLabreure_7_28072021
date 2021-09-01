@@ -9,10 +9,10 @@ class CommentaireDataService {
     return http.get("/poste/commentaire/:id");
   }
   modifyCommentaire(){
-    return http.put("/postes/commentaire/:id");
+    return http.put("/poste/commentaire/:id");
   }
-  deleteCommentaire() {
-    return http.delete("/postes/:id/commentaire/:id");
+  deleteCommentaire(id) {
+    return http.delete("/poste/commentaire/"+ id);
   }
 
 }

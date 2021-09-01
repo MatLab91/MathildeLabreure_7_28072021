@@ -26,7 +26,8 @@
 
       <div id="button-container">
       <button @click="savePoste" class="button-publier">Publier</button>
-      <button class="button-trombone"><i class="fas fa-paperclip"></i></button>
+      <!-- <FileUpload/>
+      <button class="button-trombone"><i class="fas fa-paperclip"></i></button> -->
       </div>
     </div>
 
@@ -40,9 +41,13 @@
 
 <script>
 import PosteDataService from "../services/PosteDataService";
+// import FileUpload from "@/components/FileUpload.vue";
 
 export default {
   name: "add-poste",
+  /*components : {
+    FileUpload
+  },*/
   data() {
     return {
       poste: {
@@ -96,7 +101,6 @@ export default {
     box-shadow: $shadow;
     border-radius: 10px;
     max-width: 800px;
-    width: 80vh;
     margin: auto;
   }
 }
@@ -140,9 +144,9 @@ button {
   width: 90%;
   margin-right: 1%;
 }
-.button-trombone {
+/*.button-trombone {
   width:10%;
-}
+}*/
 .btn {
   width: 80%;
   margin-left: 10%;

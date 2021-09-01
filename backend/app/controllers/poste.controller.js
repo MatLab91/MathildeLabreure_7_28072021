@@ -15,31 +15,28 @@ const regex = /^([A-Za-z0-9\s.])*$/
 
 // Créer et sauvegarder un nouveau poste
 exports.create = (req, res) => {
-  // Validate request
+  let token = req.body.token
+  const decodedToken = jwt.decode(token, tokenKey);
+  // Valider l'entrée
   if (!req.body.title || !req.body.content) {
     res.status(400).send({
       message: "Ce champ ne peut pas être vide."
     });
     return;
   }
-
-  let token = req.body.token
-
-  const decodedToken = jwt.decode(token, tokenKey);
+  
   //on decode le token
   const userId = decodedToken.userId;
-  console.log(userId)
-  console.log(token)
-  console.log(decodedToken)
   // Créer la publication
   const dataPoste = {
     title: req.body.title,
     content: req.body.content,
-    userId: userId
+    userId: userId,
+    imageURL: `http://localhost:8080/images/${req.file.filename}`
   };
-  // Save Poste in the database
+  // Sauvegarder le poste dans la base de données
   Poste.create(dataPoste)
-  
+
     .then(data => {
       res.send(data);
     })

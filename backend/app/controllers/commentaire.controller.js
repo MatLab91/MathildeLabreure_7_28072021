@@ -39,7 +39,7 @@ exports.createCommentaire = (req, res, next) => {
     })
 }
 
-
+// Afficher tous les commentaires sur un poste
 exports.getAllCommentaires = async (req, res) => {
   let acces = false
   order(req)
@@ -82,7 +82,7 @@ exports.modifyCommentaire = (req, res, next) => {
 }
 
   // Supprimer son propre commentaire
-  exports.deleteCommentaire = (req, res, next) => {
+  exports.deleteCommentaire = (req, res) => {
     Commentaire.findOne({
       where: { id: req.params.id }
     })
@@ -91,7 +91,7 @@ exports.modifyCommentaire = (req, res, next) => {
         order(req)
         admin(req)
         if (acces = true) {
-          Commentaire.destroy({ id: req.params.id })
+          Commentaire.destroy({ id: req.params.id }, { truncate: true })
             .then(() => res.status(201).json({ message: 'Le commentaire a bien été supprimé.' }))
             .catch((error) => res.status(400).json({ error }))
         }

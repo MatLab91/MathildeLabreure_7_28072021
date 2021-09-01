@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
   <div class="header main-wrapper header--wrapper">
     <div>
       <router-link to="/forum" class="header--lien" aria-label="Retour vers la page d'accueil">
