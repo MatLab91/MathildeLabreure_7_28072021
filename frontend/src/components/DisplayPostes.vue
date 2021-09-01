@@ -25,6 +25,9 @@
         <div>
           <p>{{ poste.content }}</p>
         </div>
+        <div>
+        <img :src=poste.imageURL>
+        </div>
       </main>
 
       <footer>

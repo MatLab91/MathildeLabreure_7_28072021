@@ -40,6 +40,27 @@ exports.createCommentaire = (req, res, next) => {
 }
 
 // Afficher tous les commentaires sur un poste
+exports.getCommentairesByPoste = async (req, res) => {
+  let acces = false
+  order(req)
+  admin(req)
+  if (acces = true) {
+    await Commentaire.findAll({
+      include: [
+        {
+          model: Utilisateur,
+          attributes: ['name'],
+          required: false
+        }
+      ],
+      where: { posteId: req.params.id }
+    })
+      .then((Commentaires) => res.status(200).json(Commentaires))
+      .catch(error => res.status(404).json({ error }))
+  } else { (console.log('false')), window.location = 'http://localhost:8080/login' }
+}
+
+// Afficher tous les commentaires sur un poste
 exports.getAllCommentaires = async (req, res) => {
   let acces = false
   order(req)

@@ -59,7 +59,7 @@ export default {
     },
   },
   beforeMount() {
-    CommentaireDataService.getAllCommentaires()
+    CommentaireDataService.getCommentairesByPoste(this.posteId)
       .then((response) => {
         this.commentaires = response.data;
         console.log(response.data);
@@ -67,7 +67,7 @@ export default {
       .catch((e) => {
         console.log(e);
       });
-    this.retrieveCommentaires();
+    //this.retrieveCommentaires();
   },
 };
 </script>

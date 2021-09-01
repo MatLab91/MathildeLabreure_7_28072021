@@ -1,89 +1,104 @@
 <template>
-<div class="card-container">
+  <div class="card-container">
     <div class="card" v-if="!submitted">
-      <div class="form-group">
-        <input
-          placeholder="Titre de la publication"
-          type="text"
-          class="form-control poste-titre"
-          id="title"
-          required
-          v-model="poste.title"
-          name="title"
-        />
-      </div>
+      <form @submit.prevent="savePoste" enctype="multipart/form-data">
+        <div class="form-group">
+          <input
+            placeholder="Titre de la publication"
+            type="text"
+            class="form-control poste-titre"
+            id="title"
+            required
+            v-model="poste.title"
+            name="title"
+          />
+        </div>
 
-      <div class="form-group">
-        <input
-          placeholder="Description"
-          class="form-control poste-description"
-          id="description"
-          required
-          v-model="poste.content"
-          name="description"
-        />
-      </div>
+        <div class="form-group">
+          <input
+            placeholder="Description"
+            class="form-control poste-description"
+            id="description"
+            required
+            v-model="poste.content"
+            name="description"
+          />
+        </div>
 
-      <div id="button-container">
-      <button @click="savePoste" class="button-publier">Publier</button>
-      <!-- <FileUpload/>
-      <button class="button-trombone"><i class="fas fa-paperclip"></i></button> -->
-      </div>
+        <div class="form-group">
+          <div class="fields">
+            <label>Upload files</label><br />
+            <input type="file" ref="file" @change="onChangeFile" />
+          </div>
+        </div>
+
+        <div id="button-container">
+          <button class="button-publier">Publier</button>
+          <button class="button-trombone">
+            <i class="fas fa-paperclip"></i>
+          </button>
+        </div>
+      </form>
     </div>
 
-     <div v-else>
+    <div v-else>
       <h4 id="poste-done-title">Votre poste a bien été publié !</h4>
       <button class="btn" @click="newPoste">Ajouter un nouveau poste</button>
     </div>
   </div>
-
 </template>
 
 <script>
 import PosteDataService from "../services/PosteDataService";
-// import FileUpload from "@/components/FileUpload.vue";
 
 export default {
   name: "add-poste",
-  /*components : {
-    FileUpload
-  },*/
+  components: {
+  },
   data() {
     return {
       poste: {
         id: null,
         title: "",
-        content: ""
+        content: "",
       },
-      submitted: false
+      file: "",
+      submitted: false,
     };
   },
   methods: {
     savePoste() {
-      var data = {
-        title: this.poste.title,
-        content: this.poste.content,
-        token: sessionStorage.getItem("token")
-      };
 
-      PosteDataService.create(data)
-        .then(response => {
+    const formData = new FormData();
+    formData.append('title', this.poste.title);
+    formData.append('content', this.poste.content);
+    formData.append('file', this.file);
+    formData.append('token', sessionStorage.getItem("token"));
+
+      PosteDataService.create(formData)
+        .then((response) => {
           this.poste.id = response.data.id;
           console.log(response.data);
           this.submitted = true;
-          this.$emit('refresh')
+          this.$emit("refresh");
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e);
         });
+        
     },
 
-     newPoste() {
+    newPoste() {
       this.submitted = false;
       this.Poste = {};
       this.$forceUpdate();
-    }
-  }
+    },
+
+    onChangeFile() {
+      const file = this.$refs.file.files[0];
+      this.file = file;
+    },
+  },
 };
 </script>
 
@@ -94,9 +109,9 @@ export default {
   font-weight: 800;
   max-width: 800px;
   border-radius: 16px;
-  padding:32px;
+  padding: 32px;
   margin: auto;
-  font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
+  font-family: "Poppins", sans-serif, Helvetica, Arial, sans-serif;
   &-container {
     box-shadow: $shadow;
     border-radius: 10px;
@@ -123,16 +138,16 @@ export default {
 }
 button {
   background: $color-secondary;
-  color:white;
+  color: white;
   border-radius: 8px;
   font-weight: 800;
   font-size: 15px;
   border: none;
   padding: 16px;
-  transition: .4s background-color;
+  transition: 0.4s background-color;
   &:hover {
-  cursor:pointer;
-  background: $color-secondary-light;
+    cursor: pointer;
+    background: $color-secondary-light;
   }
 }
 #button-container {
@@ -152,8 +167,8 @@ button {
   margin-left: 10%;
   margin-bottom: 2%;
 }
-#poste-done-title{
+#poste-done-title {
   text-align: center;
-  padding-top: 5%
-} 
+  padding-top: 5%;
+}
 </style>

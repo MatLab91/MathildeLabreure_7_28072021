@@ -6,7 +6,10 @@ class CommentaireDataService {
     return http.post("/poste/commentaire", data);
   }
   getAllCommentaires() {
-    return http.get("/poste/commentaire/:id");
+    return http.get("/poste/commentaire");
+  }
+  getCommentairesByPoste(posteId) {
+    return http.get("/poste/commentaire/" + posteId);
   }
   modifyCommentaire(){
     return http.put("/poste/commentaire/:id");

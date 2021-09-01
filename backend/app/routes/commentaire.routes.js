@@ -7,8 +7,10 @@ const router = new Router()
 
 // Créer un nouveau commentaire sous un poste
 router.post("/api/poste/commentaire", commentaires.createCommentaire); //auth
+// Montrer tous les commentaires
+router.get("/api/poste/commentaire", commentaires.getAllCommentaires); //auth
 // Montrer tous les commentaires d'un poste
-router.get("/api/poste/commentaire/:id", commentaires.getAllCommentaires); //auth
+router.get("/api/poste/commentaire/:id", commentaires.getCommentairesByPoste); //auth
 // Modifier un commentaire
 router.put("/poste/commentaire/:id", commentaires.modifyCommentaire);//auth
 // Supprimer un commentaire

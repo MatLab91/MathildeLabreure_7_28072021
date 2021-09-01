@@ -16,7 +16,7 @@
             <label for="ajout-commentaire" class="hidden">Votre commentaire</label>
             <input v-model="commentaire.content" id="ajout-commentaire" type="text" placeholder="Votre commentaire">
             <input type="hidden" name="postId">
-            <button @click="publierCommentaire" type="submit" aria-label="Commenter">Commenter</button>
+            <button @click.prevent="publierCommentaire(posteId)" type="submit" aria-label="Commenter">Commenter</button>
           </form>
           <!-- enlever la balise form -->
         </div>
