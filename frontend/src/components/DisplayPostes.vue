@@ -11,8 +11,19 @@
           </p>
         </div>
         <form class="header--supprimer--post">
-          <button @click="deletePoste(poste.id)" aria-label="Supprimer la publication">
+          <button
+            @click="deletePoste(poste.id)"
+            aria-label="Supprimer la publication"
+          >
             <i class="fas fa-trash"></i>
+          </button>
+        </form>
+        <form class="header--supprimer--post">
+          <button
+            @click="modifyPoste(poste.id)"
+            aria-label="Modifier la publication"
+          >
+            <i class="fas fa-pen"></i>
           </button>
         </form>
       </header>
@@ -22,11 +33,11 @@
         <strong>
           {{ poste.title }}
         </strong>
-        <div>
+        <div class="content">
           <p>{{ poste.content }}</p>
         </div>
         <div>
-        <img :src=poste.imageURL>
+          <img :src="poste.imageURL" />
         </div>
       </main>
 
@@ -92,14 +103,18 @@ export default {
         });
     }*/
     deletePoste(id) {
-      PosteDataService
-        .deletePoste(`${id}`)
-        .then((response) => {
-          console.log(response.data);
-          alert('Le poste a correctement été supprimé')
-          this.$emit('refresh')
-      })
-    }
+      PosteDataService.deletePoste(`${id}`).then((response) => {
+        console.log(response.data);
+        alert("Le poste a correctement été supprimé");
+        this.$emit("refresh");
+      });
+    },
+    modifyPoste(id) {
+      PosteDataService.modifyPoste(`${id}`).then((response) => {
+        console.log(response.data);
+        alert("Le poste a été modifié correctement");
+      });
+    },
   },
   beforeMount() {
     PosteDataService.getAllPostes()
@@ -148,7 +163,7 @@ article {
   &--supprimer--post {
     button {
       background: $color-secondary-lighter;
-      margin: 1rem 3rem 1rem 1rem;
+      margin: 1rem 1rem 1rem 1rem;
       padding: 9% 11%;
       border: 1px solid $color-secondary;
       border-radius: 10px;
@@ -164,75 +179,16 @@ article {
   }
 }
 main {
+  img {
+    width: 100%;
+    margin-top: -1rem;
+  }
   .content {
     padding: 1em 2em;
     font-weight: bolder;
   }
 }
 
-.commentaires {
-  clear: both;
-  &--unique {
-    border-top: solid 2px $color-primary;
-    border-bottom: solid 2px $color-primary;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-around;
-    align-items: center;
-    flex-grow: 2;
-  }
-}
-.commentaires {
-  &--poste {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    &--titre {
-      font-style: italic;
-      margin: 0;
-      span {
-        color: $color-secondary;
-      }
-    }
-    &--texte {
-      margin: 0;
-    }
-  }
-}
-.commentaires {
-  &--ajouter {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    input {
-      flex-grow: 2;
-      min-width: 0;
-      padding: 0 1em;
-      border: 1px solid $color-primary;
-      height: 3rem;
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
-    }
-    button {
-      background: $color-primary-lighter;
-      border: 1px solid $color-primary;
-      border-left: none;
-      height: 3.13rem;
-      font-size: 1em;
-      color: $color-ajouter-commentaire;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      cursor: pointer;
-      margin-right: 0.5rem;
-      &:hover {
-        background: $color-primary-light;
-      }
-    }
-  }
-}
 .hidden {
   display: none;
 }

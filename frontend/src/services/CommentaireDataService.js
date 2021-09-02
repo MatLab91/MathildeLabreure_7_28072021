@@ -11,8 +11,8 @@ class CommentaireDataService {
   getCommentairesByPoste(posteId) {
     return http.get("/poste/commentaire/" + posteId);
   }
-  modifyCommentaire(){
-    return http.put("/poste/commentaire/:id");
+  modifyCommentaire(id){
+    return http.put("/poste/commentaire/" +id);
   }
   deleteCommentaire(id) {
     return http.delete("/poste/commentaire/"+ id);

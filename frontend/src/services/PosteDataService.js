@@ -11,6 +11,9 @@ class PosteDataService {
   deletePoste(id) {
     return http.delete("/postes/"+ id);
   }
+  modifyPoste(id) {
+    return http.update("/postes/"+ id);
+  }
 
 }
 export default new PosteDataService();

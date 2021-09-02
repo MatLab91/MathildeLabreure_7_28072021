@@ -82,11 +82,14 @@ exports.getAllCommentaires = async (req, res) => {
 
 //Modifier son propre commentaire
 exports.modifyCommentaire = (req, res, next) => {
+  let token = req.body.token
+  const decodedToken = jwt.decode(token, tokenKey);
+  const userId = decodedToken.userId;
   let content = req.body.content;
   let acces = false
   order(req)
 
-  if (acces = true) {
+  if (Commentaire.userId === userId) {
     Commentaire.findOne({
       attributes: ['id', 'content'],
       where: { id: req.params.id }
@@ -99,11 +102,14 @@ exports.modifyCommentaire = (req, res, next) => {
           .catch((error) => res.status(400).json({ error }))
       })
       .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable' }))
+  } else {
+    res.status(403).json({ message: "vous n'avez pas le droit de modifier ce commentaire" })
   }
 }
 
   // Supprimer son propre commentaire
   exports.deleteCommentaire = (req, res) => {
+    if (Commentaire.userId === userId) {
     Commentaire.findOne({
       where: { id: req.params.id }
     })
@@ -118,4 +124,7 @@ exports.modifyCommentaire = (req, res, next) => {
         }
       })
       .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable.' }))
-  };
+   } else {
+    res.status(403).json({ message: "vous n'avez pas le droit de supprimer ce commentaire" })
+  }
+};

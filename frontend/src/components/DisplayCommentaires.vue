@@ -9,15 +9,20 @@
       <div class="commentaires--unique">
         <div class="commentaires--poste">
           <p class="commentaires--poste--titre">
-            <span>PERSONNE : {{ commentaire.utilisateur.name }}</span>
+            <span>{{ commentaire.utilisateur.name }}</span>
             {{ getDate(commentaire.createdAt) }}
           </p>
           <p class="commentaires--poste--texte">
-            CONTENU : {{ commentaire.content }}
+            {{ commentaire.content }}
           </p>
         </div>
-        <div @click="deleteCommentaire(commentaire.id)" class="commentaires--delete">
-          <i class="fas fa-trash"></i>
+        <div class="icones">
+          <div @click="deleteCommentaire(commentaire.id)" class="commentaires--delete">
+            <i class="fas fa-trash"></i>
+          </div>
+          <div @click="modifyCommentaire(commentaire.id)" class="commentaires--delete">
+            <i class="fas fa-pen"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -51,7 +56,9 @@ export default {
       return date;
     },
     deleteCommentaire(id) {
-      CommentaireDataService.deleteCommentaire(`${id}`).then((response) => {
+      CommentaireDataService
+      .deleteCommentaire(`${id}`)
+      .then((response) => {
         console.log(response.data);
         alert("Le commentaire a été supprimé correctement.");
         this.$emit("refresh");
@@ -86,6 +93,9 @@ export default {
     align-items: center;
     flex-grow: 2;
   }
+}
+.icones {
+  display: flex;
 }
 .commentaires {
   &--poste {

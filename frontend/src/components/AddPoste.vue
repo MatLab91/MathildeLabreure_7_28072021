@@ -25,18 +25,23 @@
           />
         </div>
 
+        
         <div class="form-group">
-          <div class="fields">
-            <label>Upload files</label><br />
-            <input type="file" ref="file" @change="onChangeFile" />
+          <div class="file-upload">
+            <button>
+              <label for="file">Ajouter une image</label>
+            <input class="file-upload__input" type="file" id="file" ref="file" @change="onChangeFile" />
+            
+            </button>
           </div>
         </div>
+        
 
         <div id="button-container">
           <button class="button-publier">Publier</button>
-          <button class="button-trombone">
+          <!-- <button class="button-trombone">
             <i class="fas fa-paperclip"></i>
-          </button>
+          </button>  -->
         </div>
       </form>
     </div>
@@ -105,6 +110,21 @@ export default {
 <style lang="scss" scoped>
 @import "../../variables.scss";
 
+.file-upload {
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+.file-upload__input {
+  width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
 .card {
   font-weight: 800;
   max-width: 800px;
@@ -156,8 +176,8 @@ button {
   justify-content: space-between;
 }
 .button-publier {
-  width: 90%;
-  margin-right: 1%;
+  margin-top: 1%;
+  width: 100%;
 }
 /*.button-trombone {
   width:10%;

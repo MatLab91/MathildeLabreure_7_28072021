@@ -40,6 +40,7 @@ export default {
         .then((response) => {
           this.utilisateur = response.data;
           console.log(response.data);
+          sessionStorage.removeItem('token');
           this.$router.push("/login");
         })
         .catch((e) => {
