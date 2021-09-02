@@ -120,3 +120,25 @@ exports.delete = (req, res) => {
         })
         .catch(() => res.status(500).json({ 'error': 'Utilisateur introuvable' }))
 };
+
+// L'utilisateur modifie son profil
+
+exports.modifyUser = (req, res) => {
+    let token = req.body.token
+    const decodedToken = jwt.decode(token, tokenKey);
+    const userId = decodedToken.userId;
+    let name = req.body.name
+    Utilisateur.findOne({
+        where: { id: req.params.id }
+    })
+        .then((Utilisateur) => {
+            if (Utilisateur.id === userId) {
+                Utilisateur.update({
+                    name: (name ? name : Commentaire.name)
+                  })
+                    .then(() => res.status(201).json({ message: 'Utilisateur modifié' }))
+                    .catch((error) => res.status(400).json({ error }))
+            }
+        })
+        .catch(() => res.status(500).json({ 'error': 'Utilisateur introuvable' }))
+};
