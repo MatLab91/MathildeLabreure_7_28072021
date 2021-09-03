@@ -74,17 +74,33 @@ export default {
           password: this.password,
         })
         .then(() => {
-          this.$router.push("/login");
+          this.$router.push("/forum");
         })
         .catch(() => {
           this.$router.push("/signup");
         });
-    },
-    deletePoste() {
-
     }
   },
 };
+/*  methods: {
+    switchToLogin() {
+      this.$router.push("/login");
+    },
+    async createAccount() {
+      await axios
+        .post("http://localhost:8080/api/signup", {
+          email: this.email,
+          name: this.name,
+          password: this.password,
+        })
+       .then((data) => {
+         console.log(data);
+         sessionStorage.setItem('token', data.data.token);
+          // this.$router.push("/forum");
+          console.log(sessionStorage.getItem('token'))
+        }) 
+    },
+  },*/
 </script>
 
 <style lang="scss" scoped>

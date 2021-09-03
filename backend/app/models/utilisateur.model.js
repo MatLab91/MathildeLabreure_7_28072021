@@ -17,7 +17,10 @@ module.exports = (sequelize, Sequelize) => {
       isAdmin: {
         type: Sequelize.BOOLEAN,
         defaultValue:0
-      }
+      },
+      /*token: {
+        type: Sequelize.STRING
+      } */
     });
   
     return Utilisateur;

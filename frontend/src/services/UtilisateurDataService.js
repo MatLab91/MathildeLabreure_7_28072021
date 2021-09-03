@@ -21,3 +21,12 @@ class UtilisateurDataService {
 }
 
 export default new UtilisateurDataService();
+
+/*signup(data) {
+    return http.post("/signup", data)
+    .then(() => {
+        // window.location.href = '/forum';
+        // expected output: "Success!"
+      });
+      
+  }*/

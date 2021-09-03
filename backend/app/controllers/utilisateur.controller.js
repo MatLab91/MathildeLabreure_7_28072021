@@ -45,6 +45,31 @@ exports.signup = (req, res, next) => {
         .catch(error => { res.status(500).json({ message: 'Erreur lors de la création du compte' }) })
 }
 
+/*bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+            const data = {
+                ...req.body,
+                password: hash,
+            };
+
+            let user = Utilisateur.create(data);
+            user.update({
+                token: jwt.sign(
+                    { userId: user.id },
+                    'RANDOM_TOKEN_SECRET',
+                    { expiresIn: '24h' }
+                )
+            })
+        
+        .then(function (user) {
+            res.status(201).json({ token: user.token });
+        })
+        .catch(error => res.status(403).json({ error }));
+})
+
+        .catch (error => { res.status(500).json({ message: 'Erreur lors de la création du compte' }) })
+}*/
+
 // Vérifie les informations d'identification de l'utilisateur, en renvoyant l'identifiant userID 
 // depuis la base de données et un jeton Web JSON signé (contenant également l'identifiant userID)
 exports.login = (req, res, next) => {

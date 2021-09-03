@@ -18,3 +18,6 @@ class PosteDataService {
 }
 export default new PosteDataService();
 
+/*  create(data) {
+    return http.post("/addPoste", data, {headers: {'Authorization': sessionStorage.getItem('token')}}); 
+  }*/

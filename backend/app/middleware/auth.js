@@ -18,3 +18,27 @@ module.exports = (req, res, next) => {
     });
   }
 };
+
+
+/*const jwt = require('jsonwebtoken');
+require('dotenv').config({ path: './variables.env' });
+const tokenKey = process.env.SECRET_KEY;
+
+module.exports = (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    const decodedToken = jwt.verify(token, tokenKey);
+    const userId = decodedToken.userId;
+    const user = Utitlisateur.findOne({ where: { token: token } })
+    console.log(user)
+    if (!user) {
+      throw 'Invalid user ID';
+    } else {
+      next();
+    }
+  } catch {
+    res.status(401).json({
+      error: new Error('Invalid request!')
+    });
+  }
+};*/
