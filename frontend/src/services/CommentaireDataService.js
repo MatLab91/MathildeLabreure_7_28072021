@@ -11,11 +11,11 @@ class CommentaireDataService {
   getCommentairesByPoste(posteId) {
     return http.get("/poste/commentaire/" + posteId);
   }
-  modifyCommentaire(id){
-    return http.put("/poste/commentaire/" +id);
+  modifyCommentaire(id, data) {
+    return http.put("/poste/commentaire/" + id, data);
   }
-  deleteCommentaire(id) {
-    return http.delete("/poste/commentaire/"+ id);
+  deleteCommentaire(id, token) {
+    return http.delete("/poste/commentaire/" + id, { headers: { token: token } });
   }
 
 }

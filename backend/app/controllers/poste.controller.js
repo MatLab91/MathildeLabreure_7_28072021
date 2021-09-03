@@ -25,7 +25,7 @@ exports.create = (req, res) => {
     });
     return;
   }
-  
+
   //on decode le token
   const userId = decodedToken.userId;
   // Créer la publication
@@ -72,43 +72,20 @@ exports.getAllPostes = async (req, res) => {
 
 // Supprimer un poste
 exports.deletePoste = (req, res) => {
-  let token = req.body.token
+  let token = req.headers.authorization;
   const decodedToken = jwt.decode(token, tokenKey);
   const userId = decodedToken.userId
+
   Poste.findOne({
     where: { id: req.params.id },
   })
     .then((Poste) => {
-      if (userId === Poste.userId) {
+      if (userId === Poste.userId || decodedToken.isAdmin) {
         Poste.destroy({ id: req.params.id }, { truncate: true })
           .then(() => res.status(201).json({ message: 'Le poste a bien été supprimé' }))
           .catch((error) => res.status(400).json({ error }))
       } else {
         res.status(403).json({ message: "vous n'avez pas les droits" })
-      }
-    })
-    .catch(() => res.status(500).json({ 'error': 'Publication introuvable' }))
-};
-
-// Modifier un poste
-exports.modifyPoste = (req, res) => {
-  let token = req.body.token
-  const decodedToken = jwt.decode(token, tokenKey);
-  const userId = req.body.userId;
-  let content = req.body.content
-  let imageURL = req.body.imageURL
-  Poste.findOne({
-    where: { id: req.params.id },
-  })
-    .then((Poste) => {
-      if (userId === Commentaire.userId) {
-        Poste.update({ 
-          title: (title ? title : Poste.title),
-          content: (content ? content : Poste.content),
-          imageURL: (imageURL ? imageURL : imageURL)
-        })
-          .then(() => res.status(201).json({ message: 'Le poste a bien été modifié' }))
-          .catch((error) => res.status(400).json({ error }))
       }
     })
     .catch(() => res.status(500).json({ 'error': 'Publication introuvable' }))

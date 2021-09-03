@@ -11,11 +11,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-		path: "/",
-		redirect: {
-			name: "Login"
-		}
-	},
+    path: "/",
+    redirect: {
+      name: "Login"
+    }
+  },
   {
     path: '/about',
     name: 'About',
@@ -33,25 +33,25 @@ const routes = [
     path: '/profil',
     name: 'Profil',
     component: Profil,
-		//meta: { auth: true },
+    //meta: { auth: true },
   },
   {
     path: '/login',
     name: 'Login',
     component: Login,
-		meta: { auth: false }
+    meta: { auth: false }
   },
   {
     path: '/signup',
     name: 'SignUp',
     component: SignUp,
-		meta: { auth: false }
+    meta: { auth: false }
   },
   {
     path: '/forum',
     name: 'Forum',
     component: Forum,
-		//meta: { auth: true },
+    //meta: { auth: true },
   }
 ]
 

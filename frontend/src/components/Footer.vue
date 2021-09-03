@@ -1,26 +1,31 @@
 <template>
-    <div id="footer">
-        <ul id="footer-liste">
-            <li><router-link class="footer--lien" to="/about"><i class="fas fa-info-circle"></i> About</router-link></li>
-            <li><router-link class="footer--lien" to="/contact"><i class="far fa-envelope"></i> Contact</router-link></li>
-        </ul>
-        <router-view/>
-    </div>
-
-    
+  <div id="footer">
+    <ul id="footer-liste">
+      <li>
+        <router-link class="footer--lien" to="/about"
+          ><i class="fas fa-info-circle"></i> About</router-link
+        >
+      </li>
+      <li>
+        <router-link class="footer--lien" to="/contact"
+          ><i class="far fa-envelope"></i> Contact</router-link
+        >
+      </li>
+    </ul>
+    <router-view />
+  </div>
 </template>
 
 <script>
-
 export default {
-    name: "Footer"
-}
+  name: "Footer",
+};
 </script>
 
 <style lang="scss" scoped>
 @import "../../variables.scss";
 #footer {
-  font-family: 'Poppins', sans-serif, Helvetica, Arial, sans-serif;
+  font-family: "Poppins", sans-serif, Helvetica, Arial, sans-serif;
   background-color: $color-like-neutral;
   color: white;
   padding-top: 0.8rem;
@@ -39,17 +44,17 @@ ul {
   text-decoration: none;
 }
 .footer--lien {
-    color: white;
-    font-weight: bolder;
-    line-height: 1.5rem;
+  color: white;
+  font-weight: bolder;
+  line-height: 1.5rem;
+  text-decoration: none;
+  padding-left: 0px;
+  :link {
     text-decoration: none;
-    padding-left: 0px;
-    :link {
-        text-decoration: none;
-    }
-    &:hover {
-    font-weight:800;
+  }
+  &:hover {
+    font-weight: 800;
     color: $color-secondary;
-    }
+  }
 }
 </style>

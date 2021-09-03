@@ -45,31 +45,6 @@ exports.signup = (req, res, next) => {
         .catch(error => { res.status(500).json({ message: 'Erreur lors de la création du compte' }) })
 }
 
-/*bcrypt.hash(req.body.password, 10)
-        .then(hash => {
-            const data = {
-                ...req.body,
-                password: hash,
-            };
-
-            let user = Utilisateur.create(data);
-            user.update({
-                token: jwt.sign(
-                    { userId: user.id },
-                    'RANDOM_TOKEN_SECRET',
-                    { expiresIn: '24h' }
-                )
-            })
-        
-        .then(function (user) {
-            res.status(201).json({ token: user.token });
-        })
-        .catch(error => res.status(403).json({ error }));
-})
-
-        .catch (error => { res.status(500).json({ message: 'Erreur lors de la création du compte' }) })
-}*/
-
 // Vérifie les informations d'identification de l'utilisateur, en renvoyant l'identifiant userID 
 // depuis la base de données et un jeton Web JSON signé (contenant également l'identifiant userID)
 exports.login = (req, res, next) => {
@@ -130,38 +105,18 @@ exports.getOneUtilisateur = (req, res, next) => {
 
 // L'utilisateur peut supprimer son profil
 exports.delete = (req, res) => {
-    Utilisateur.findOne({
-        where: { id: req.params.id }
-    })
-        .then((Utilisateur) => {
-            let acces = false
-            order(req)
-            admin(req)
-            if (acces = true) {
-                Utilisateur.destroy({ id: req.params.id }, { truncate: true })
-                    .then(() => res.status(201).json({ message: 'Utilisateur supprimé' }))
-                    .catch((error) => res.status(400).json({ error }))
-            }
-        })
-        .catch(() => res.status(500).json({ 'error': 'Utilisateur introuvable' }))
-};
 
-// L'utilisateur modifie son profil
-
-exports.modifyUser = (req, res) => {
-    let token = req.body.token
+    let token = req.headers.authorization;
     const decodedToken = jwt.decode(token, tokenKey);
     const userId = decodedToken.userId;
-    let name = req.body.name
+
     Utilisateur.findOne({
         where: { id: req.params.id }
     })
         .then((Utilisateur) => {
-            if (Utilisateur.id === userId) {
-                Utilisateur.update({
-                    name: (name ? name : Commentaire.name)
-                  })
-                    .then(() => res.status(201).json({ message: 'Utilisateur modifié' }))
+            if (Utilisateur.userId === userId || decodedToken.isAdmin) {
+                Utilisateur.destroy({ id: req.params.id }, { truncate: true })
+                    .then(() => res.status(201).json({ message: 'Utilisateur supprimé' }))
                     .catch((error) => res.status(400).json({ error }))
             }
         })

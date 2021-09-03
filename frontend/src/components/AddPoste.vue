@@ -25,17 +25,18 @@
           />
         </div>
 
-        
         <div class="form-group">
           <div class="file-upload">
-            <button>
-              <label for="file">Ajouter une image</label>
-            <input class="file-upload__input" type="file" id="file" ref="file" @change="onChangeFile" />
-            
-            </button>
+            <label for="file">Ajouter une image</label>
+            <input
+              class="file-upload__input"
+              type="file"
+              id="file"
+              ref="file"
+              @change="onChangeFile"
+            />
           </div>
         </div>
-        
 
         <div id="button-container">
           <button class="button-publier">Publier</button>
@@ -58,8 +59,7 @@ import PosteDataService from "../services/PosteDataService";
 
 export default {
   name: "add-poste",
-  components: {
-  },
+  components: {},
   data() {
     return {
       poste: {
@@ -73,12 +73,11 @@ export default {
   },
   methods: {
     savePoste() {
-
-    const formData = new FormData();
-    formData.append('title', this.poste.title);
-    formData.append('content', this.poste.content);
-    formData.append('file', this.file);
-    formData.append('token', sessionStorage.getItem("token"));
+      const formData = new FormData();
+      formData.append("title", this.poste.title);
+      formData.append("content", this.poste.content);
+      formData.append("file", this.file);
+      formData.append("token", sessionStorage.getItem("token"));
 
       PosteDataService.create(formData)
         .then((response) => {
@@ -90,7 +89,6 @@ export default {
         .catch((e) => {
           console.log(e);
         });
-        
     },
 
     newPoste() {
@@ -118,11 +116,11 @@ export default {
 
 .file-upload__input {
   width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 .card {

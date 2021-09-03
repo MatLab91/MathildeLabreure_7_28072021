@@ -82,49 +82,43 @@ exports.getAllCommentaires = async (req, res) => {
 
 //Modifier son propre commentaire
 exports.modifyCommentaire = (req, res, next) => {
-  let token = req.body.token
+  let token = req.headers.authorization
   const decodedToken = jwt.decode(token, tokenKey);
   const userId = decodedToken.userId;
-  let content = req.body.content;
-  let acces = false
-  order(req)
+  const content = req.body.content;
 
-  if (Commentaire.userId === userId) {
-    Commentaire.findOne({
-      attributes: ['id', 'content'],
-      where: { id: req.params.id }
-    })
-      .then((Commentaire) => {
+  console.log(req.params.id);
+
+  Commentaire.findOne({
+    where: { id: req.params.id }
+  })
+    .then((Commentaire) => {
+      if (Commentaire.userId === userId || decodedToken.isAdmin) {
         Commentaire.update({
           content: (content ? content : Commentaire.content)
         })
           .then(() => res.status(201).json(Commentaire))
           .catch((error) => res.status(400).json({ error }))
-      })
-      .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable' }))
-  } else {
-    res.status(403).json({ message: "vous n'avez pas le droit de modifier ce commentaire" })
-  }
+      }
+    })
+    .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable' }))
 }
 
-  // Supprimer son propre commentaire
-  exports.deleteCommentaire = (req, res) => {
-    if (Commentaire.userId === userId) {
-    Commentaire.findOne({
-      where: { id: req.params.id }
+// Supprimer son propre commentaire
+exports.deleteCommentaire = (req, res) => {
+  let token = req.headers.authorization;
+  const decodedToken = jwt.decode(token, tokenKey);
+  const userId = decodedToken.userId;
+
+  Commentaire.findOne({
+    where: { id: req.params.id }
+  })
+    .then((Commentaire) => {
+      if (Commentaire.userId === userId || decodedToken.isAdmin) {
+        Commentaire.destroy({ id: req.params.id }, { truncate: true })
+          .then(() => res.status(201).json({ message: 'Le commentaire a bien été supprimé.' }))
+          .catch((error) => res.status(400).json({ error }))
+      }
     })
-      .then((Commentaire) => {
-        let acces = false
-        order(req)
-        admin(req)
-        if (acces = true) {
-          Commentaire.destroy({ id: req.params.id }, { truncate: true })
-            .then(() => res.status(201).json({ message: 'Le commentaire a bien été supprimé.' }))
-            .catch((error) => res.status(400).json({ error }))
-        }
-      })
-      .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable.' }))
-   } else {
-    res.status(403).json({ message: "vous n'avez pas le droit de supprimer ce commentaire" })
-  }
+    .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable.' }))
 };

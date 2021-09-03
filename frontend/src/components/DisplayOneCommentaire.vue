@@ -1,53 +1,84 @@
 <template>
-  <div class="commentaires">
-    <h3>Commentaires</h3>
-    <div
-      v-for="commentaire in commentaires"
-      :key="commentaire.id"
-      class="display-commentaires"
-    >
-      <DisplayOneCommentaire :commentaire="commentaire" />
+  <div class="commentaires--unique">
+    <div class="commentaires--poste">
+      <p class="commentaires--poste--titre">
+        <span>{{ commentaire.utilisateur.name }}</span>
+        {{ getDate(commentaire.createdAt) }}
+      </p>
+      <div v-if="!toggleEdit">
+        <p class="commentaires--poste--texte">
+          {{ commentaire.content }}
+        </p>
+      </div>
+      <div v-else>
+        <form @submit.prevent="editPost">
+          <div class="form-group">
+            <input
+              placeholder="Commentaire"
+              type="text"
+              class="form-control"
+              id="title"
+              required
+              v-model="content"
+              name="title"
+            />
+          </div>
+          <button>Edition</button>
+        </form>
+      </div>
+    </div>
+    <div class="icones">
+      <div
+        @click="deleteCommentaire(commentaire.id)"
+        class="commentaires--delete"
+      >
+        <i class="fas fa-trash"></i>
+      </div>
+      <div @click="onToggleEdit()" class="commentaires--delete">
+        <i class="fas fa-pen"></i>
+      </div>
     </div>
   </div>
 </template>
 
+
 <script>
 import CommentaireDataService from "../services/CommentaireDataService";
-import DisplayOneCommentaire from "@/components/DisplayOneCommentaire.vue";
 
 export default {
-  name: "display-commentaire",
-  props: ["posteId"],
-  components: {
-    DisplayOneCommentaire,
-  },
+  name: "display-one-commentaire",
+  props: ["commentaire"],
   data() {
     return {
-      commentaires: [],
+      content: "",
+      toggleEdit: false,
     };
   },
   methods: {
-    retrieveCommentaires() {
-      CommentaireDataService.getAllCommentaires()
-        .then((response) => {
-          this.commentaires = response.data;
-          console.log(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    onToggleEdit() {
+      this.toggleEdit = !this.toggleEdit;
+      this.content = this.commentaire.content;
     },
-  },
-  beforeMount() {
-    CommentaireDataService.getCommentairesByPoste(this.posteId)
-      .then((response) => {
-        this.commentaires = response.data;
+    deleteCommentaire(id) {
+      CommentaireDataService.deleteCommentaire(`${id}`).then((response) => {
         console.log(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
+        alert("Le commentaire a été supprimé correctement.");
+        this.$emit("refresh");
       });
-    //this.retrieveCommentaires();
+    },
+    editPost() {
+      CommentaireDataService.modifyCommentaire(`${this.commentaire.id}`, {
+        content: this.content,
+      }).then((response) => {
+        console.log(response.data);
+        alert("Le commentaire a été modifié correctement.");
+        this.$emit("refresh");
+      });
+    },
+    getDate(datetime) {
+      let date = new Date(datetime).toJSON().slice(0, 10).replace(/-/g, "/");
+      return date;
+    },
   },
 };
 </script>

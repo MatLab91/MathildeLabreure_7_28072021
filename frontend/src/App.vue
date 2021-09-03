@@ -40,7 +40,6 @@
           aria-label="Se déconnecter"
           title="Se déconnecter"
         >
-          
           <i @click="removeToken()" class="fas fa-power-off"></i>
         </router-link>
       </nav>
@@ -50,14 +49,13 @@
 </template>
 
 <script>
-export default {  
+export default {
   methods: {
     removeToken() {
-    sessionStorage.removeItem('token');
-    }
-  }
-}
-
+      sessionStorage.removeItem("token");
+    },
+  },
+};
 </script>
 
 

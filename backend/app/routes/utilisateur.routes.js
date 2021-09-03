@@ -9,9 +9,9 @@ router.post("/api/signup", utilisateurs.signup);
 // Se connecter
 router.post("/api/login", utilisateurs.login);
 // Afficher un utilisateur
-router.get("/api/profil/:id", utilisateurs.getOneUtilisateur) //auth
+router.get("/api/profil/:id", auth, utilisateurs.getOneUtilisateur);
 // Supprimer un utilisateur
-router.delete("/api/profil/:id", utilisateurs.delete); //auth
+router.delete("/api/profil/:id", auth, utilisateurs.delete);
 
 
 module.exports = router

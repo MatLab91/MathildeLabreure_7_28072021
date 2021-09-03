@@ -12,18 +12,10 @@
         </div>
         <form class="header--supprimer--post">
           <button
-            @click="deletePoste(poste.id)"
+            @click.prevent="deletePoste(poste.id)"
             aria-label="Supprimer la publication"
           >
             <i class="fas fa-trash"></i>
-          </button>
-        </form>
-        <form class="header--supprimer--post">
-          <button
-            @click="modifyPoste(poste.id)"
-            aria-label="Modifier la publication"
-          >
-            <i class="fas fa-pen"></i>
           </button>
         </form>
       </header>
@@ -106,7 +98,7 @@ export default {
       PosteDataService.deletePoste(`${id}`).then((response) => {
         console.log(response.data);
         alert("Le poste a correctement été supprimé");
-        this.$emit("refresh");
+        this.retrievePostes();
       });
     },
     modifyPoste(id) {
