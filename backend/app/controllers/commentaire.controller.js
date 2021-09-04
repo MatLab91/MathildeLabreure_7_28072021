@@ -99,6 +99,8 @@ exports.modifyCommentaire = (req, res, next) => {
         })
           .then(() => res.status(201).json(Commentaire))
           .catch((error) => res.status(400).json({ error }))
+      } else {
+        res.status(403).json({ message: "vous n'avez pas les droits" })
       }
     })
     .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable' }))
@@ -118,6 +120,9 @@ exports.deleteCommentaire = (req, res) => {
         Commentaire.destroy({ id: req.params.id }, { truncate: true })
           .then(() => res.status(201).json({ message: 'Le commentaire a bien été supprimé.' }))
           .catch((error) => res.status(400).json({ error }))
+      } else {
+        console.log(userId)
+        res.status(403).json({ message: "Vous n'avez pas le droit de supprimer ce commentaire." })
       }
     })
     .catch(() => res.status(500).json({ 'error': 'Le commentaire est introuvable.' }))

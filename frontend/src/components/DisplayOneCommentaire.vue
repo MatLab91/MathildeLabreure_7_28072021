@@ -23,7 +23,7 @@
               name="title"
             />
           </div>
-          <button>Edition</button>
+          <button>Modifier</button>
         </form>
       </div>
     </div>

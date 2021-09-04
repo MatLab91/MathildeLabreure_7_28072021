@@ -114,7 +114,7 @@ exports.delete = (req, res) => {
         where: { id: req.params.id }
     })
         .then((Utilisateur) => {
-            if (Utilisateur.userId === userId || decodedToken.isAdmin) {
+            if (Utilisateur.id === userId || decodedToken.isAdmin) {
                 Utilisateur.destroy({ id: req.params.id }, { truncate: true })
                     .then(() => res.status(201).json({ message: 'Utilisateur supprimé' }))
                     .catch((error) => res.status(400).json({ error }))
